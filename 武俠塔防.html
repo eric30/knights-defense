@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8" />
+<title>俠客守江山 · 武俠塔防</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  :root {
+    --paper: #f4ead5;
+    --paper-2: #ead9b0;
+    --paper-3: #d8c08a;
+    --ink: #2a241c;
+    --ink-soft: #4a3f32;
+    --cinnabar: #b23a2a;
+    --cinnabar-d: #7d2519;
+    --bamboo: #6b8e4e;
+    --bamboo-d: #3e5a2e;
+    --gold: #c9a24a;
+    --wood: #6b4a2b;
+    --wood-d: #3e2912;
+    --grass: #8fb86a;
+    --grass-d: #6a9049;
+    --path: #d8c085;
+    --path-d: #b89960;
+    --shadow: 0 4px 0 rgba(42,36,28,.25), 0 10px 24px rgba(42,36,28,.18);
+  }
+  html, body {
+    margin: 0; padding: 0;
+    background: #1d1610;
+    font-family: "Noto Sans TC", "PingFang TC", system-ui, sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  /* Outer page – dark theatre so scroll looks hung */
+  body {
+    background:
+      radial-gradient(ellipse at 50% 10%, #352a1d 0%, #1d1610 60%, #0f0a06 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 28px 16px;
+  }
+  #root { width: 100%; display: flex; justify-content: center; }
+  .serif { font-family: "Noto Serif TC", serif; }
+  .kuaile { font-family: "ZCOOL KuaiLe", "Noto Serif TC", cursive; }
+
+  /* -------- Scroll shell -------- */
+  .scroll {
+    width: min(1280px, 100%);
+    position: relative;
+    padding: 28px 0;
+  }
+  .scroll-body {
+    background:
+      /* subtle fiber */
+      repeating-linear-gradient(90deg, rgba(120,90,40,.04) 0 2px, transparent 2px 5px),
+      radial-gradient(ellipse at 20% 10%, rgba(200,160,90,.25), transparent 60%),
+      radial-gradient(ellipse at 80% 90%, rgba(160,120,60,.22), transparent 55%),
+      linear-gradient(180deg, #f7ecd3, #ecdcb4);
+    border-left: 2px solid #caa971;
+    border-right: 2px solid #caa971;
+    box-shadow:
+      inset 0 0 0 1px rgba(120,90,40,.15),
+      inset 0 30px 60px rgba(120,90,40,.18),
+      inset 0 -30px 60px rgba(120,90,40,.18);
+    padding: 28px 34px 34px;
+    position: relative;
+  }
+  .scroll-body::before, .scroll-body::after {
+    content: ""; position: absolute; left: 0; right: 0; height: 16px;
+    background:
+      linear-gradient(180deg, rgba(80,55,20,.35), transparent),
+      repeating-linear-gradient(90deg, rgba(120,90,40,.2) 0 2px, transparent 2px 6px);
+  }
+  .scroll-body::before { top: 0; }
+  .scroll-body::after { bottom: 0; transform: scaleY(-1); }
+
+  .rod {
+    height: 28px;
+    border-radius: 18px;
+    background:
+      linear-gradient(180deg, #a5764a 0%, #6b4a2b 50%, #3e2912 100%);
+    box-shadow:
+      inset 0 2px 0 rgba(255,220,170,.35),
+      inset 0 -4px 6px rgba(0,0,0,.45),
+      0 8px 20px rgba(0,0,0,.55);
+    position: relative;
+    margin: 0 -10px;
+  }
+  .rod::before, .rod::after {
+    content: ""; position: absolute; top: -6px; bottom: -6px; width: 40px;
+    border-radius: 10px;
+    background: radial-gradient(ellipse at 50% 30%, #d9a35a, #6b4a2b 70%, #2a1a08);
+    box-shadow: 0 4px 10px rgba(0,0,0,.6), inset 0 2px 0 rgba(255,220,170,.4);
+  }
+  .rod::before { left: -8px; }
+  .rod::after { right: -8px; }
+  .rod-top { margin-bottom: -6px; }
+  .rod-bot { margin-top: -6px; }
+
+  /* Vermilion seal */
+  .seal {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 68px; height: 68px;
+    background: var(--cinnabar);
+    color: #fcefd1;
+    font-family: "Noto Serif TC", serif;
+    font-weight: 900;
+    border-radius: 6px;
+    line-height: 1;
+    font-size: 22px;
+    padding: 6px;
+    text-align: center;
+    box-shadow: inset 0 0 0 3px #fcefd1, inset 0 0 0 5px var(--cinnabar), 0 4px 0 var(--cinnabar-d);
+    transform: rotate(-6deg);
+    letter-spacing: 2px;
+  }
+
+  /* -------- Title bar -------- */
+  .titlebar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .title {
+    font-family: "Noto Serif TC", serif;
+    font-weight: 900;
+    font-size: 34px;
+    letter-spacing: 4px;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .title .swash {
+    color: var(--cinnabar);
+    border-bottom: 3px solid var(--cinnabar);
+    padding: 0 2px 2px;
+  }
+  .subtitle {
+    font-size: 13px;
+    letter-spacing: 6px;
+    color: var(--ink-soft);
+    margin-left: 4px;
+  }
+
+  /* -------- Top bamboo tray (unit selector) -------- */
+  .tray {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+    background:
+      repeating-linear-gradient(90deg,
+        #c7a35a 0 38px,
+        #b48a43 38px 40px,
+        #c7a35a 40px 78px,
+        #8e6a2e 78px 80px);
+    border: 2px solid var(--wood-d);
+    border-radius: 8px;
+    padding: 10px 12px;
+    box-shadow: inset 0 2px 0 rgba(255,230,180,.4), inset 0 -4px 6px rgba(0,0,0,.25), 0 4px 0 var(--wood-d);
+    position: relative;
+    z-index: 600;
+  }
+  .tray .qi-box {
+    min-width: 96px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: linear-gradient(180deg,#fff6e1,#f0ddb0);
+    border: 2px solid var(--wood-d);
+    border-radius: 6px;
+    padding: 4px 8px 6px;
+    position: relative;
+  }
+  .qi-value {
+    font-family: "Noto Serif TC", serif;
+    font-weight: 900;
+    font-size: 26px;
+    color: var(--cinnabar-d);
+    line-height: 1;
+  }
+  .qi-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--ink-soft);
+    margin-top: 2px;
+  }
+  .qi-bar {
+    height: 4px;
+    width: 100%;
+    background: rgba(0,0,0,.1);
+    border-radius: 2px;
+    margin-top: 6px;
+    overflow: hidden;
+  }
+  .qi-bar > div {
+    height: 100%;
+    background: linear-gradient(90deg, var(--bamboo), var(--gold));
+    transition: width .2s;
+  }
+
+  .unit-card {
+    width: 76px;
+    background: linear-gradient(180deg,#fff6e1,#f0ddb0);
+    border: 2px solid var(--wood-d);
+    border-radius: 6px;
+    padding: 6px 4px 4px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    transition: transform .08s;
+  }
+  .unit-card:hover { transform: translateY(-2px); z-index: 1001; }
+  .unit-card:hover .tip { display: block; }
+  .tip {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 210px;
+    background: #fff6e1;
+    border: 2px solid var(--wood-d);
+    border-radius: 8px;
+    padding: 10px 12px 12px;
+    box-shadow: 0 12px 30px rgba(0,0,0,.45), inset 0 2px 0 rgba(255,230,180,.6);
+    z-index: 1000;
+    text-align: left;
+    pointer-events: none;
+  }
+  .tip::before {
+    content: "";
+    position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid var(--wood-d);
+  }
+  .tip h5 {
+    margin: 0 0 4px;
+    font-family: "Noto Serif TC", serif; font-weight: 900;
+    font-size: 15px; letter-spacing: 3px; color: var(--cinnabar-d);
+    border-bottom: 1px dashed rgba(74,63,50,.4);
+    padding-bottom: 3px;
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .tip h5 small { font-size: 10px; letter-spacing: 2px; color: var(--ink-soft); font-weight: 500; }
+  .tip .desc { font-size: 12px; line-height: 1.5; color: var(--ink); margin-bottom: 6px; letter-spacing: .5px; }
+  .tip .stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 3px 8px;
+    font-size: 11px; color: var(--ink-soft);
+  }
+  .tip .stats b { color: var(--ink); font-weight: 700; margin-left: 4px; }
+  .unit-card.selected {
+    outline: 3px solid var(--cinnabar);
+    box-shadow: 0 0 0 2px #fcefd1, 0 6px 0 var(--cinnabar-d);
+  }
+  .unit-card.cooling, .unit-card.unaffordable { filter: grayscale(.8) brightness(.85); cursor: not-allowed; }
+  .unit-card .glyph {
+    height: 46px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .unit-card .name {
+    font-family: "Noto Serif TC", serif;
+    font-weight: 900;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: var(--ink);
+    margin-top: 2px;
+  }
+  .unit-card .cost {
+    display: inline-block;
+    margin-top: 2px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fcefd1;
+    background: var(--bamboo-d);
+    padding: 1px 8px;
+    border-radius: 999px;
+  }
+  .unit-card .cooldown {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(30,20,10,.55), rgba(30,20,10,.55));
+    border-radius: 4px;
+    pointer-events: none;
+    clip-path: inset(var(--cd-top, 0%) 0 0 0);
+    display: flex; align-items: flex-start; justify-content: center;
+    color: #fff; font-weight: 700; font-size: 11px; padding-top: 4px;
+  }
+
+  /* -------- Battlefield -------- */
+  .stage-wrap {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 14px;
+    margin-top: 14px;
+  }
+
+  .side-panel {
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .side-card {
+    background: linear-gradient(180deg,#fff6e1,#eccf91);
+    border: 2px solid var(--wood-d);
+    border-radius: 8px;
+    padding: 10px 10px 12px;
+    box-shadow: inset 0 2px 0 rgba(255,230,180,.5), 0 3px 0 var(--wood-d);
+    text-align: center;
+  }
+  .side-card h3 {
+    margin: 0 0 6px;
+    font-family: "Noto Serif TC", serif;
+    font-size: 15px;
+    letter-spacing: 3px;
+    color: var(--ink);
+    border-bottom: 1px dashed rgba(74,63,50,.5);
+    padding-bottom: 4px;
+  }
+  .wave-chip {
+    background: #fff6e1;
+    border: 1px solid var(--wood-d);
+    border-radius: 4px;
+    padding: 4px 0;
+    font-family: "Noto Serif TC", serif;
+    font-weight: 900;
+    color: var(--cinnabar-d);
+    font-size: 20px;
+  }
+  .wave-dots { display: flex; gap: 3px; justify-content: center; margin-top: 6px; flex-wrap: wrap; }
+  .wave-dot { width: 10px; height: 10px; border-radius: 50%; background: #caa971; border: 1px solid var(--wood-d); }
+  .wave-dot.done { background: var(--bamboo); }
+  .wave-dot.current { background: var(--cinnabar); box-shadow: 0 0 0 2px #fcefd1; }
+
+  .ctl-btn {
+    background: linear-gradient(180deg,#c7a35a,#8e6a2e);
+    color: #fff6e1;
+    border: 2px solid var(--wood-d);
+    border-radius: 6px;
+    padding: 8px 6px;
+    font-family: "Noto Serif TC", serif;
+    font-weight: 900;
+    font-size: 14px;
+    letter-spacing: 3px;
+    cursor: pointer;
+    box-shadow: inset 0 2px 0 rgba(255,230,180,.4), 0 3px 0 var(--wood-d);
+  }
+  .ctl-btn:active { transform: translateY(1px); box-shadow: inset 0 2px 0 rgba(255,230,180,.4), 0 2px 0 var(--wood-d); }
+
+  .stage {
+    position: relative;
+    border: 3px solid var(--wood-d);
+    border-radius: 10px;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    box-shadow: inset 0 0 0 2px #fcefd1, 0 4px 0 var(--wood-d);
+    background: #98b66f;
+  }
+  .stage .bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 18% 22%, rgba(255,255,230,.35), transparent 55%),
+      radial-gradient(ellipse at 80% 80%, rgba(0,0,0,.15), transparent 60%),
+      linear-gradient(180deg, #a7c77a 0%, #88ad5d 60%, #6d9048 100%);
+  }
+  .stage.night .bg {
+    background:
+      radial-gradient(ellipse at 82% 16%, rgba(220,230,255,.35), transparent 55%),
+      radial-gradient(ellipse at 20% 80%, rgba(0,0,0,.3), transparent 60%),
+      linear-gradient(180deg, #2b3756 0%, #1c2540 60%, #141b30 100%);
+  }
+  .stage .vignette {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0,0,0,.35) 100%);
+    pointer-events: none;
+  }
+
+  /* Village at right (home) */
+  .village {
+    position: absolute; right: 0; top: 0; bottom: 0; width: 7%;
+    background:
+      linear-gradient(90deg, transparent, rgba(0,0,0,.22));
+    display: flex; flex-direction: column; align-items: center; justify-content: space-around;
+    padding: 4% 0;
+    pointer-events: none;
+  }
+
+  /* Attacker spawn at left */
+  .wilds {
+    position: absolute; left: 0; top: 0; bottom: 0; width: 6%;
+    background: linear-gradient(-90deg, transparent, rgba(0,0,0,.25));
+    pointer-events: none;
+  }
+
+  /* Grid overlay */
+  .grid {
+    position: absolute;
+    left: 7%; right: 9%;
+    top: 4%; bottom: 6%;
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+  }
+  .cell {
+    border: 1px dashed rgba(60,44,20,.18);
+    position: relative;
+    transition: background .12s;
+  }
+  .cell:hover {
+    background: rgba(255,247,210,.18);
+    box-shadow: inset 0 0 0 2px rgba(178,58,42,.45);
+    cursor: pointer;
+  }
+  .cell.occupied:hover { cursor: not-allowed; box-shadow: inset 0 0 0 2px rgba(0,0,0,.35); }
+  .stage.night .cell { border-color: rgba(220,220,255,.14); }
+
+  /* Path stripe overlays - subtle dirt path along each row */
+  .lane-stripe {
+    position: absolute; left: 0; right: 0; height: calc(100% / 5);
+    background:
+      repeating-linear-gradient(90deg, rgba(120,80,30,.09) 0 18px, transparent 18px 36px);
+    pointer-events: none;
+  }
+
+  /* -------- Entities (placed/enemies/projectiles) -------- */
+  .entity { position: absolute; transform: translate(-50%, -50%); pointer-events: none; }
+  .bob { animation: bob 1.8s ease-in-out infinite; }
+  @keyframes bob {
+    0%,100% { transform: translate(-50%, -52%); }
+    50%     { transform: translate(-50%, -48%); }
+  }
+  .enemy-walk { animation: walk 0.45s ease-in-out infinite alternate; }
+  @keyframes walk {
+    from { transform: translate(-50%, -50%) rotate(-4deg); }
+    to   { transform: translate(-50%, -50%) rotate(4deg); }
+  }
+
+  .hp {
+    position: absolute;
+    left: 50%;
+    top: -12px;
+    transform: translateX(-50%);
+    width: 30px; height: 4px;
+    background: rgba(0,0,0,.45);
+    border: 1px solid #111;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .hp > div { height: 100%; background: linear-gradient(90deg, #e14b3a, #f6c744); }
+
+  /* Projectile */
+  .arrow {
+    width: 22px; height: 4px; border-radius: 2px;
+    background: linear-gradient(90deg, #8b6a3a, #4a3a20);
+    position: relative;
+  }
+  .arrow::after {
+    content: ""; position: absolute; left: -5px; top: -3px;
+    border-right: 8px solid #2a241c; border-top: 5px solid transparent; border-bottom: 5px solid transparent;
+  }
+  .star {
+    width: 14px; height: 14px; background: #cfd8dc; clip-path: polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 72%,21% 91%,32% 57%,2% 35%,39% 35%); box-shadow: 0 0 0 1px #111;
+  }
+  .fire { width: 14px; height: 14px; border-radius: 50%; background: radial-gradient(#ffe08a, #ff7a2b 60%, #a02a0a); box-shadow: 0 0 10px rgba(255,140,40,.8); }
+  .bomb { width: 16px; height: 16px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #666, #222 70%); box-shadow: 0 0 8px rgba(0,0,0,.7), inset 0 -3px 0 rgba(0,0,0,.5); position: relative; }
+  .bomb::after { content: ""; position: absolute; top: -6px; left: 50%; width: 4px; height: 6px; background: #f7a94b; border-radius: 50%; box-shadow: 0 0 6px rgba(255,140,40,.9); transform: translateX(-50%); }
+  .spear { width: 48px; height: 4px; background: linear-gradient(90deg, rgba(255,230,160,0) 0%, #f4d24b 30%, #fff7d0 60%, rgba(255,230,160,0) 100%); border-radius: 2px; box-shadow: 0 0 12px rgba(244,210,75,.9); animation: spearFlash .22s ease-out forwards; transform-origin: left center; }
+  @keyframes spearFlash { 0% { opacity: 0; transform: scaleX(.2); } 35% { opacity: 1; transform: scaleX(1.1); } 100% { opacity: 0; transform: scaleX(1.2); } }
+
+  /* Qi orb */
+  .orb {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #fff5c0, #e8c348 55%, #a07820);
+    border: 3px solid #6a4a10;
+    box-shadow: 0 0 18px rgba(255,220,100,.85), inset 0 -5px 0 rgba(0,0,0,.22);
+    cursor: pointer; pointer-events: auto;
+    display: flex; align-items: center; justify-content: center;
+    font-family: "Noto Serif TC", serif; font-weight: 900; color: #6a4a10; font-size: 20px;
+    animation: orbPulse 1.6s ease-in-out infinite;
+  }
+  @keyframes orbPulse {
+    0%,100% { box-shadow: 0 0 14px rgba(255,220,100,.7), inset 0 -5px 0 rgba(0,0,0,.22); }
+    50%     { box-shadow: 0 0 24px rgba(255,220,100,1),  inset 0 -5px 0 rgba(0,0,0,.22); }
+  }
+
+  /* -------- Footer -------- */
+  .footer {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 14px;
+    font-size: 13px; color: var(--ink-soft);
+    letter-spacing: 2px;
+  }
+  .footer .legend { display: flex; gap: 14px; align-items: center; }
+  .footer .chip { display: inline-flex; align-items: center; gap: 6px; }
+  .footer .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--cinnabar); }
+
+  /* Toast */
+  .toast {
+    position: absolute; left: 50%; top: 44%;
+    transform: translateX(-50%);
+    font-family: "Noto Serif TC", serif; font-weight: 900;
+    color: #fcefd1; background: rgba(30,20,10,.72);
+    padding: 18px 32px; border-radius: 8px;
+    border: 2px solid var(--gold);
+    font-size: 28px; letter-spacing: 8px;
+    box-shadow: 0 8px 30px rgba(0,0,0,.5);
+    animation: toastin 1.8s ease forwards;
+    pointer-events: none;
+    text-shadow: 0 0 10px rgba(201,162,74,.7);
+    white-space: nowrap;
+    z-index: 300;
+  }
+  @keyframes toastin {
+    0% { opacity: 0; transform: translate(-50%, 10%) scale(.85); }
+    15%,70% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -10%) scale(1); }
+  }
+
+  /* Tweaks panel */
+  .tweaks {
+    position: fixed; right: 18px; bottom: 18px;
+    background: #fff6e1;
+    border: 2px solid var(--wood-d);
+    border-radius: 8px;
+    padding: 12px 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.35), inset 0 2px 0 rgba(255,230,180,.6);
+    font-size: 13px;
+    display: none;
+    z-index: 1000;
+    min-width: 180px;
+  }
+  .tweaks.show { display: block; }
+  .tweaks h4 {
+    margin: 0 0 8px; font-family: "Noto Serif TC", serif; font-size: 14px; letter-spacing: 3px;
+    color: var(--cinnabar-d);
+  }
+  .tweaks label { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 6px 0; }
+  .switch { position: relative; width: 42px; height: 22px; background: #caa971; border-radius: 11px; cursor: pointer; border: 1px solid var(--wood-d); }
+  .switch > span { position: absolute; top: 1px; left: 1px; width: 18px; height: 18px; background: #fff6e1; border-radius: 50%; transition: left .15s; border: 1px solid var(--wood-d); }
+  .switch.on { background: var(--bamboo); }
+  .switch.on > span { left: 21px; }
+
+  /* Assumptions card shown while loading */
+  .boot {
+    color: #f4ead5;
+    font-family: "Noto Serif TC", serif;
+    text-align: center;
+    padding: 60px 24px;
+  }
+  .boot h1 { font-size: 42px; letter-spacing: 8px; margin: 0 0 8px; }
+  .boot p { opacity: .75; letter-spacing: 4px; }
+</style>
+
+<script>
+  // Tweakable defaults, persisted via host
+  window.__TWEAKS = /*EDITMODE-BEGIN*/{
+    "night": false,
+    "qiPerSecond": 16,
+    "startQi": 280
+  }/*EDITMODE-END*/;
+</script>
+</head>
+<body>
+<div id="root"><div class="boot"><h1>俠客守江山</h1><p>載入中…</p></div></div>
+
+<div id="tweaks" class="tweaks">
+  <h4>TWEAKS · 調整</h4>
+  <label>日夜 <span class="switch" id="sw-night"><span></span></span></label>
+  <label>內力生成速度
+    <input id="qi-rate" type="range" min="6" max="40" step="2" />
+  </label>
+  <label>起始內力
+    <input id="qi-start" type="range" min="50" max="300" step="10" />
+  </label>
+</div>
+
+<script type="text/babel" data-presets="env,react" src="game.jsx"></script>
+<script>
+  // Tweaks host protocol
+  (function(){
+    window.addEventListener('message', (e) => {
+      const d = e.data || {};
+      if (d.type === '__activate_edit_mode') document.getElementById('tweaks').classList.add('show');
+      if (d.type === '__deactivate_edit_mode') document.getElementById('tweaks').classList.remove('show');
+    });
+    window.parent.postMessage({type: '__edit_mode_available'}, '*');
+
+    function persist(edits) {
+      Object.assign(window.__TWEAKS, edits);
+      window.parent.postMessage({type:'__edit_mode_set_keys', edits}, '*');
+      window.dispatchEvent(new CustomEvent('tweaks-change', { detail: window.__TWEAKS }));
+    }
+    window.__persistTweak = persist;
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "knights-defense",
+  "private": true,
+  "version": "0.0.0",
+  "description": "俠客守江山 — wuxia tower defense",
+  "scripts": {
+    "build": "babel game.jsx -o game.js --presets=@babel/preset-react",
+    "serve": "python3 -m http.server 8080"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.24.0",
+    "@babel/core": "^7.24.0",
+    "@babel/preset-react": "^7.24.0"
+  }
+}
