@@ -10,6 +10,8 @@ const UNITS = [
     color: "#5c8a42", accent: "#b23a2a",
     desc: "基礎遠攻。每 1.4 秒射出一箭，穩定消耗。",
     tags: ["遠程", "單體"],
+    title: "射雕手 · 黃忠舊部",
+    story: "出身荊州獵戶，自幼拉弓射虎，後隨黃忠學藝。百步穿楊，箭無虛發，守城戰中最可靠的眼睛。",
   },
   {
     id: "swordsman", name: "刀客", cost: 100, cd: 12, hp: 12,
@@ -17,6 +19,8 @@ const UNITS = [
     color: "#9c3a28", accent: "#2a241c",
     desc: "近身格擋，血厚。擋住敵人去路，每 1.6 秒揮刀一次。",
     tags: ["近戰", "肉盾"],
+    title: "西涼刀客 · 馬家軍殘部",
+    story: "西涼舊部流落中原，一身橫練，一把鐵刀。話少，但當敵人衝到面前，他只會往前踏一步。",
   },
   {
     id: "priest", name: "道士", cost: 175, cd: 14, hp: 5,
@@ -24,6 +28,8 @@ const UNITS = [
     color: "#c6a030", accent: "#4a3d0f",
     desc: "擲出符火，爆炸範圍傷害，對一群嘍囉最有效。",
     tags: ["遠程", "範圍"],
+    title: "符籙道人 · 龍虎山下",
+    story: "雲遊道士，畫符點火，一張黃紙能燒一片人。傳說他的符火引的是天雷，最恨妖教作亂。",
   },
   {
     id: "strategist", name: "軍師", cost: 50, cd: 14, hp: 4,
@@ -31,6 +37,8 @@ const UNITS = [
     color: "#7b5ba0", accent: "#3a2b56",
     desc: "八卦陣星。不造傷害，但命中目標減速 50% 長達 3 秒。",
     tags: ["輔助", "減速"],
+    title: "臥龍弟子 · 奇門遁甲",
+    story: "諸葛丞相的再傳弟子。八卦陣星不殺人，但讓敵人寸步難行——有時比殺更可怕。",
   },
   {
     id: "crossbow", name: "連弩車", cost: 175, cd: 9, hp: 10,
@@ -38,6 +46,8 @@ const UNITS = [
     color: "#8a6a3a", accent: "#3e2912",
     desc: "機關連珠箭，攻速極快。火力覆蓋首選。",
     tags: ["機關", "高攻速"],
+    title: "元戎連弩 · 蜀漢秘兵",
+    story: "諸葛連弩改良版，一次十矢齊發。蜀漢壓箱底的機關，如今流落民間莊院。",
   },
   {
     id: "well", name: "聚氣陣", cost: 50, cd: 12, hp: 5,
@@ -45,13 +55,17 @@ const UNITS = [
     color: "#3e8a7a", accent: "#153e39",
     desc: "佈陣吸納天地靈氣，每 10 秒生成一顆內力（+25 氣）。",
     tags: ["機關", "產氣"],
+    title: "聚氣陣 · 五行引",
+    story: "依五行方位埋設的丹爐，引地脈之氣。懂行的人一看就知道：這玩意兒比金銀還貴重。",
   },
   {
-    id: "monk", name: "僧兵", cost: 125, cd: 10, hp: 18,
+    id: "monk", name: "僧兵", cost: 200, cd: 20, hp: 18,
     kind: "melee", interval: 1.3, projectile: null, dmg: 2,
     color: "#b88040", accent: "#5a3a18",
     desc: "少林鐵布衫，血量極厚，近身棍打。最強的肉盾。",
     tags: ["近戰", "超厚血"],
+    title: "嵩山武僧 · 十三棍",
+    story: "少林羅漢堂出身，鐵布衫練到第九重。一根齊眉棍，替天下冤屈討公道。",
   },
   {
     id: "thrower", name: "擲鏢客", cost: 100, cd: 8, hp: 5,
@@ -59,6 +73,8 @@ const UNITS = [
     color: "#4a6e8a", accent: "#1a2e40",
     desc: "江湖暗器，飛鏢快速射出，單體攻速比弓手更快。",
     tags: ["遠程", "連射"],
+    title: "江南擲鏢客 · 暗器世家",
+    story: "蘇州暗器世家的獨子，一身青布短衣，袖裡藏七星。快、準、狠，連眨眼都能要命。",
   },
   {
     id: "flame", name: "火焰陣", cost: 200, cd: 18, hp: 4,
@@ -66,6 +82,8 @@ const UNITS = [
     color: "#d13a20", accent: "#6a1a0a",
     desc: "機關噴火，高傷大範圍，適合清一大群敵人。",
     tags: ["機關", "範圍", "高傷"],
+    title: "火焰陣 · 赤壁遺法",
+    story: "周郎破曹時所用火計的縮小版。一座鐵爐點燃，三丈內皆是修羅場。",
   },
   {
     id: "spearman", name: "長槍兵", cost: 150, cd: 11, hp: 10,
@@ -73,43 +91,90 @@ const UNITS = [
     color: "#6a5a30", accent: "#2a2010",
     desc: "前方 2 格槍刺，可同時扎到兩個敵人。半近半遠。",
     tags: ["近戰", "穿透"],
+    title: "白馬長槍兵 · 趙雲門下",
+    story: "常山趙子龍的親兵後人，一桿丈八長槍。身在後排，卻能一刺串兩敵，進退有度。",
   },
 ];
 
 /* Enemy library – diverse attack patterns */
 const ENEMIES = [
-  { id: "infantry", name: "小嘍囉", hp: 4,  speed: 0.0013, dmg: 1, color: "#6a5130", kind: "melee", interval: 1.1 },
-  { id: "shield",   name: "盾兵",   hp: 12, speed: 0.0010, dmg: 1, color: "#4a4a4a", kind: "melee", interval: 1.4 },
-  { id: "fast",     name: "蒙面刺客", hp: 3,  speed: 0.0025, dmg: 2, color: "#2a2a2a", kind: "melee", interval: 0.8 },
-  { id: "archer",   name: "敵弓手",   hp: 3,  speed: 0.0012, dmg: 1, color: "#3a5540", kind: "ranged", interval: 2.2, projectile: "arrow" },
-  { id: "cannon",   name: "火砲車",   hp: 10, speed: 0.0007, dmg: 2, color: "#6b4a2b", kind: "ranged", interval: 3.0, projectile: "bomb", splash: true },
-  { id: "healer",   name: "妖僧",     hp: 6,  speed: 0.0009, dmg: 0, color: "#5a3e8a", kind: "healer", interval: 2.5, heal: 3 },
-  { id: "leaper",   name: "飛賊",     hp: 5,  speed: 0.0020, dmg: 1, color: "#8a3a5a", kind: "leap", interval: 1.0 },
-  { id: "boss",     name: "魔教護法", hp: 30, speed: 0.0008, dmg: 2, color: "#7a1e30", kind: "melee", interval: 1.2 },
+  { id: "infantry", name: "小嘍囉", hp: 4,  speed: 0.0013, dmg: 1, color: "#6a5130", kind: "melee", interval: 1.1,
+    title: "黃巾散兵", story: "頭裹黃巾的流民，手持鋸齒刀，為一口飽飯上戰場。人數最多，但一觸即潰。" },
+  { id: "shield",   name: "盾兵",   hp: 12, speed: 0.0010, dmg: 1, color: "#4a4a4a", kind: "melee", interval: 1.4,
+    title: "重盾死士", story: "一人高的鐵木盾，擋刀擋箭。移動極慢，但一旦頂到前排就很難撼動。" },
+  { id: "fast",     name: "蒙面刺客", hp: 3,  speed: 0.0025, dmg: 2, color: "#2a2a2a", kind: "melee", interval: 0.8,
+    title: "夜行刺客", story: "江湖上被買通的殺手，黑巾蒙面，來去如影。血不厚，但一刀致命。" },
+  { id: "archer",   name: "敵弓手",   hp: 3,  speed: 0.0012, dmg: 1, color: "#3a5540", kind: "ranged", interval: 2.2, projectile: "arrow",
+    title: "山林獵戶（被擄）", story: "被山賊脅迫的獵戶，站後排冷箭偷襲。只要你的前排倒了，他的箭就會穿過整條走道。" },
+  { id: "cannon",   name: "火砲車",   hp: 10, speed: 0.0007, dmg: 2, color: "#6b4a2b", kind: "ranged", interval: 3.0, projectile: "bomb", splash: true,
+    title: "魔教火砲車", story: "改裝過的攻城器，填的是火藥與鐵釘。一發下來濺射整排，慢但致命。" },
+  { id: "healer",   name: "妖僧",     hp: 6,  speed: 0.0009, dmg: 0, color: "#5a3e8a", kind: "healer", interval: 2.5, heal: 3,
+    title: "妖教護法僧", story: "自稱佛門，實為妖教。口唸偽咒，能讓身邊重傷的同夥瞬間回血。不除此人，全排難倒。" },
+  { id: "leaper",   name: "飛賊",     hp: 5,  speed: 0.0020, dmg: 1, color: "#8a3a5a", kind: "leap", interval: 1.0,
+    title: "輕功飛賊", story: "一身黑衣的梁上君子。碰到擋路的俠客能一個縱身躍過去，前排肉盾對他沒用。" },
+  { id: "boss",     name: "魔教護法", hp: 30, speed: 0.0008, dmg: 2, color: "#7a1e30", kind: "melee", interval: 1.2,
+    title: "魔教左護法", story: "張角失蹤後殘部之首，頭戴鐵角盔，一身橫練。血厚力強，是最後壓場的大魔王。" },
 ];
+
+/* ---------------- Campaign ---------------- */
+const CAMPAIGNS = [
+  {
+    id: "yellow_turban", name: "黃巾之亂", era: "漢靈帝 · 中平元年",
+    location: "冀州 · 廣宗城外",
+    intro: "蒼天已死，黃天當立。張角兄弟率黃巾軍縱橫河北，流民被蠱惑，四野烽煙。你奉命守下廣宗城外的一處莊院，等待盧植大軍馳援。",
+    enemies: ["infantry", "shield", "fast", "archer"],
+    waves: 6,
+  },
+  {
+    id: "hulao_pass", name: "虎牢關前", era: "漢獻帝 · 初平元年",
+    location: "司隸 · 虎牢關外",
+    intro: "董卓逆天，諸侯共討。呂布奉命守虎牢，派出悍將試探聯軍。你是聯軍先鋒，在關外一小山坳結陣，擋住西涼鐵騎的頭陣。",
+    enemies: ["infantry", "shield", "archer", "leaper", "fast"],
+    waves: 8,
+  },
+  {
+    id: "changban", name: "長坂坡之役", era: "漢獻帝 · 建安十三年",
+    location: "荊州 · 當陽長坂",
+    intro: "劉皇叔棄新野南逃，百姓扶老攜幼隨行。曹軍虎豹騎追至長坂坡。你是斷後的義軍，必須撐到趙子龍將主公送出。",
+    enemies: ["infantry", "fast", "shield", "archer", "cannon", "leaper"],
+    waves: 9,
+  },
+  {
+    id: "chibi", name: "赤壁鏖兵", era: "漢獻帝 · 建安十三年冬",
+    location: "荊州 · 赤壁江畔",
+    intro: "曹公八十萬眾，飲馬長江。孫劉聯軍僅數萬，卻要以火計破之。你領一小隊守住江邊烽火台，引曹兵入陷阱——只要不讓他們撲滅信號台。",
+    enemies: ["infantry", "shield", "archer", "cannon", "fast", "leaper", "healer"],
+    waves: 10,
+  },
+];
+
 
 /* Wave composition – escalating difficulty */
 const WAVES = [
-  // Wave 1 – intro
+  // Wave 1
   [["infantry", 3]],
   // Wave 2
-  [["infantry", 3], ["fast", 1]],
-  // Wave 3 – first archer
-  [["infantry", 3], ["archer", 1], ["fast", 1]],
-  // Wave 4 – shields
-  [["shield", 2], ["infantry", 3], ["archer", 1]],
-  // Wave 5 – first leaper
-  [["leaper", 1], ["fast", 2], ["infantry", 3], ["archer", 1]],
-  // Wave 6 – first cannon
-  [["cannon", 1], ["shield", 2], ["fast", 2], ["infantry", 2]],
-  // Wave 7 – first healer
-  [["healer", 1], ["infantry", 4], ["archer", 2], ["shield", 1]],
-  // Wave 8 – heavy mix
-  [["cannon", 1], ["leaper", 2], ["archer", 2], ["shield", 2], ["infantry", 3]],
-  // Wave 9 – pre-boss flood
-  [["healer", 1], ["cannon", 1], ["shield", 3], ["archer", 2], ["fast", 3], ["infantry", 4]],
-  // Wave 10 – BOSS
-  [["boss", 1], ["healer", 1], ["leaper", 2], ["cannon", 1], ["archer", 3], ["shield", 2], ["fast", 3], ["infantry", 4]],
+  [["infantry", 4], ["fast", 1]],
+  // Wave 3
+  [["infantry", 4], ["archer", 1], ["fast", 2]],
+  // Wave 4
+  [["shield", 2], ["infantry", 4], ["archer", 2], ["fast", 1]],
+  // Wave 5
+  [["leaper", 1], ["fast", 3], ["infantry", 4], ["archer", 2]],
+  // Wave 6
+  [["cannon", 1], ["shield", 3], ["fast", 3], ["infantry", 4], ["archer", 1]],
+  // Wave 7
+  [["healer", 1], ["infantry", 6], ["archer", 3], ["shield", 2], ["fast", 2]],
+  // Wave 8
+  [["cannon", 2], ["leaper", 2], ["archer", 3], ["shield", 3], ["infantry", 5], ["fast", 2]],
+  // Wave 9
+  [["healer", 2], ["cannon", 2], ["shield", 4], ["archer", 3], ["fast", 4], ["infantry", 6], ["leaper", 1]],
+  // Wave 10
+  [["leaper", 3], ["cannon", 2], ["healer", 1], ["archer", 4], ["shield", 4], ["fast", 5], ["infantry", 7]],
+  // Wave 11
+  [["cannon", 3], ["healer", 2], ["leaper", 3], ["archer", 4], ["shield", 5], ["fast", 5], ["infantry", 8]],
+  // Wave 12 – final boss
+  [["boss", 1], ["healer", 2], ["cannon", 3], ["leaper", 3], ["archer", 5], ["shield", 5], ["fast", 6], ["infantry", 10]],
 ];
 
 /* ---------------- SVG sprites (Q-版, original & simple) ---------------- */
@@ -390,9 +455,16 @@ function Rock({ x, y }) {
 /* ---------------- Game component ---------------- */
 const ROWS = 5, COLS = 9;
 
-function App() {
+function Battle({ roster, campaign, onExit }) {
   /* Tweaks */
   const [tweaks, setTweaks] = useState(() => ({...window.__TWEAKS}));
+  /* Randomize day/night per battle (ignore tweak value) */
+  const [isNight] = useState(() => Math.random() < 0.5);
+  /* Filter unit library by selected roster */
+  const ACTIVE_UNITS = useMemo(
+    () => UNITS.filter(u => !roster || roster.includes(u.id)),
+    [roster]
+  );
   useEffect(() => {
     const h = (e) => setTweaks({...e.detail});
     window.addEventListener('tweaks-change', h);
@@ -402,6 +474,7 @@ function App() {
   /* Core game state */
   const [qi, setQi] = useState(tweaks.startQi || 100);
   const [selected, setSelected] = useState(null);       // unit id being placed
+  const [recallMode, setRecallMode] = useState(false);  // whistle active — click to recall unit
   const [placements, setPlacements] = useState([]);     // {id, unit, row, col, hp, lastAttack, nextProduce}
   const [enemies, setEnemies] = useState([]);           // {id, type, row, x (0-1 along lane), hp, slowUntil}
   const [projectiles, setProjectiles] = useState([]);   // {id, row, fromCol, x, dmg, kind, splash, slow, slowTime}
@@ -412,6 +485,7 @@ function App() {
   const [toast, setToast] = useState(null);
   const [prepLeft, setPrepLeft] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [confirmRestart, setConfirmRestart] = useState(false);
   const [time, setTime] = useState(0);                  // accumulated seconds
   const idCounter = useRef(1);
   const nextId = () => idCounter.current++;
@@ -423,22 +497,27 @@ function App() {
     const swNight = document.getElementById('sw-night');
     const qiRate = document.getElementById('qi-rate');
     const qiStart = document.getElementById('qi-start');
+    const rosterEl = document.getElementById('roster-size');
     const sync = () => {
-      swNight.classList.toggle('on', !!tweaks.night);
+      if (swNight) swNight.classList.toggle('on', !!tweaks.night);
       qiRate.value = tweaks.qiPerSecond;
       qiStart.value = tweaks.startQi;
+      if (rosterEl) rosterEl.value = tweaks.rosterSize || 6;
     };
     sync();
     const onNight = () => window.__persistTweak({ night: !window.__TWEAKS.night });
     const onRate = (e) => window.__persistTweak({ qiPerSecond: +e.target.value });
     const onStart = (e) => window.__persistTweak({ startQi: +e.target.value });
-    swNight.addEventListener('click', onNight);
+    const onRoster = (e) => window.__persistTweak({ rosterSize: +e.target.value });
+    if (swNight) swNight.addEventListener('click', onNight);
     qiRate.addEventListener('input', onRate);
     qiStart.addEventListener('input', onStart);
+    if (rosterEl) rosterEl.addEventListener('input', onRoster);
     return () => {
-      swNight.removeEventListener('click', onNight);
+      if (swNight) swNight.removeEventListener('click', onNight);
       qiRate.removeEventListener('input', onRate);
       qiStart.removeEventListener('input', onStart);
+      if (rosterEl) rosterEl.removeEventListener('input', onRoster);
     };
   }, [tweaks]);
 
@@ -789,10 +868,22 @@ function App() {
     }
   }
 
-  /* Cell click: place unit */
+  /* Cell click: place unit (or recall if whistle active) */
   function onCellClick(r, c) {
+    if (recallMode) {
+      const existing = placements.find(p => p.row === r && p.col === c);
+      if (!existing) { flash("此處無俠客"); return; }
+      // refund half cost, clear cooldown
+      const refund = Math.floor(existing.unit.cost * 0.5);
+      setQi(q => q + refund);
+      setPlacements(ps => ps.filter(p => p.id !== existing.id));
+      setCooldowns(cd => ({ ...cd, [existing.unit.id]: 0 }));
+      flash(`${existing.unit.name} 歸隊 +${refund} 氣`);
+      setRecallMode(false);
+      return;
+    }
     if (!selected) return;
-    const u = UNITS.find(x => x.id === selected);
+    const u = ACTIVE_UNITS.find(x => x.id === selected);
     if (!u) return;
     const existing = placements.find(p => p.row === r && p.col === c);
     if (existing) {
@@ -859,8 +950,13 @@ function App() {
           <div className="title">
             <span className="swash">俠</span><span>客守江山</span>
           </div>
-          <div className="subtitle">— 水 泊 武 林 塔 防 —</div>
+          <div className="subtitle">— {campaign ? campaign.name : "水 泊 武 林 塔 防"} —</div>
           <div style={{ flex: 1 }} />
+          {onExit && (
+            <button className="ctl-btn" style={{ marginRight: 10 }} onClick={onExit}>
+              回 帥 帳
+            </button>
+          )}
           <div className="seal serif">守<br/>土</div>
         </div>
 
@@ -871,7 +967,49 @@ function App() {
             <div className="qi-label">內 力</div>
             <div className="qi-bar"><div style={{ width: `${Math.min(100, qi/2)}%` }} /></div>
           </div>
-          {UNITS.map(u => {
+          {/* Recall bell: hanging bronze bell, visually distinct from hero tray */}
+          <div
+            className={`whistle-card ${recallMode ? "selected" : ""}`}
+            onClick={() => {
+              setRecallMode(r => !r);
+              setSelected(null);
+            }}
+            title="召回俠客（返還半數內力）"
+          >
+            <div className="wave-burst" />
+            <div className="bell-wrap">
+              <svg width="56" height="56" viewBox="0 0 64 64">
+                <defs>
+                  <linearGradient id="bell-g" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#f0c24a" />
+                    <stop offset="55%" stopColor="#c98a2a" />
+                    <stop offset="100%" stopColor="#7a4d10" />
+                  </linearGradient>
+                  <linearGradient id="bell-rim" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#8a5414" />
+                    <stop offset="100%" stopColor="#5a3408" />
+                  </linearGradient>
+                </defs>
+                {/* hanging rope */}
+                <path d="M32,2 L32,10" stroke="#6b2a20" strokeWidth="2.2" strokeLinecap="round" />
+                {/* top cap loop */}
+                <path d="M28,10 Q32,4 36,10 L34,14 L30,14 Z" fill="#8a5414" stroke="#3a1e06" strokeWidth="1.2" />
+                {/* bell body */}
+                <path d="M16,50 Q16,22 32,16 Q48,22 48,50 Z"
+                  fill="url(#bell-g)" stroke="#3a1e06" strokeWidth="1.8" strokeLinejoin="round" />
+                {/* bell shine */}
+                <path d="M22,46 Q22,26 30,22" stroke="rgba(255,240,180,.6)" strokeWidth="2" fill="none" strokeLinecap="round" />
+                {/* bell rim */}
+                <rect x="14" y="48" width="36" height="5" rx="1.5" fill="url(#bell-rim)" stroke="#3a1e06" strokeWidth="1.4" />
+                {/* engraved center character stroke */}
+                <path d="M28,30 L36,30 M32,26 L32,38" stroke="#3a1e06" strokeWidth="1.6" strokeLinecap="round" opacity=".7" />
+                {/* clapper */}
+                <circle cx="32" cy="54" r="3" fill="#3a1e06" />
+              </svg>
+            </div>
+            <div className="wname">哨 子</div>
+          </div>
+          {ACTIVE_UNITS.map(u => {
             const now = performance.now();
             const cdRemain = Math.max(0, (cooldowns[u.id] || 0) - now) / 1000;
             const cdPct = cdRemain > 0 ? (1 - cdRemain / u.cd) * 100 : 100;
@@ -886,6 +1024,7 @@ function App() {
               <div key={u.id} className={cls}
                 onClick={() => {
                   if (cdRemain > 0 || poor) return;
+                  setRecallMode(false);
                   setSelected(sel => sel === u.id ? null : u.id);
                 }}>
                 <div className="glyph"><UnitSprite unit={u} size={44} /></div>
@@ -924,10 +1063,10 @@ function App() {
             <button className="ctl-btn" onClick={() => setPaused(p => !p)}>
               {paused ? "續 戰" : "暫 停"}
             </button>
-            <button className="ctl-btn" onClick={restart}>重 整</button>
+            <button className="ctl-btn" onClick={() => { setPaused(true); setConfirmRestart(true); }}>重 整</button>
           </div>
 
-          <div className={`stage ${tweaks.night ? "night" : ""}`}>
+          <div className={`stage ${isNight ? "night" : ""} ${recallMode ? "recall-mode" : ""}`}>
             <div className="bg" />
             {/* lane stripes */}
             {[...Array(ROWS)].map((_, r) => (
@@ -940,6 +1079,26 @@ function App() {
             <Rock x={4} y={55} />
             <Pagoda x={94} y={22} />
             <Pagoda x={94} y={78} />
+            {/* extra bg decoration */}
+            <div className="tufts" />
+            <div className="bamboo-stalk" style={{ left: "1.5%", top: "12%", height: "22%" }} />
+            <div className="bamboo-stalk" style={{ left: "2.4%", top: "32%", height: "18%" }} />
+            <div className="bamboo-stalk" style={{ left: "97.5%", top: "48%", height: "22%" }} />
+            <Tree x={96} y={8} size={28} />
+            <Rock x={97} y={92} />
+            {/* banners marking village */}
+            <div className="banner-pole" style={{ right: "2%", top: "6%", height: "16%" }} />
+            <div className="banner-flag" style={{ right: "4.4%", top: "7%" }}>守</div>
+            <div className="banner-pole" style={{ right: "2%", bottom: "6%", height: "16%" }} />
+            <div className="banner-flag" style={{ right: "4.4%", bottom: "18%" }}>義</div>
+            {/* drifting petals */}
+            {[...Array(8)].map((_, i) => (
+              <div key={`petal-${i}`} className="petal" style={{
+                left: `${(i * 13 + 8) % 96}%`,
+                animationDelay: `${i * 1.1}s`,
+                animationDuration: `${8 + (i % 3) * 2}s`,
+              }} />
+            ))}
 
             <div className="wilds" />
             <div className="village" />
@@ -1010,10 +1169,23 @@ function App() {
             {toast && <Toast key={toast.key} msg={toast.msg} />}
 
             {waveState === "won" && (
-              <EndCard title="江山無恙" body="來犯之敵盡退，天下初定。" onRestart={restart} />
+              <EndCard title="江山無恙" body="來犯之敵盡退，天下初定。"
+                buttons={[{ label: "再 戰", onClick: restart, primary: true }]} />
             )}
             {waveState === "lost" && (
-              <EndCard title="城 破" body="敵軍已入莊院，再議布陣。" onRestart={restart} />
+              <EndCard title="城 破" body="敵軍已入莊院，再議布陣。"
+                buttons={[{ label: "再 戰", onClick: restart, primary: true }]} />
+            )}
+            {paused && !confirmRestart && waveState !== "won" && waveState !== "lost" && (
+              <EndCard title="暫 停" body="按「續戰」回到戰場。"
+                buttons={[{ label: "續 戰", onClick: () => setPaused(false), primary: true }]} />
+            )}
+            {confirmRestart && (
+              <EndCard title="重整戰局？" body="目前布陣與波次進度將全數清空。"
+                buttons={[
+                  { label: "取 消", onClick: () => { setConfirmRestart(false); setPaused(false); } },
+                  { label: "確認重整", onClick: () => { setConfirmRestart(false); setPaused(false); restart(); }, primary: true, danger: true },
+                ]} />
             )}
 
             {/* prep countdown */}
@@ -1090,27 +1262,79 @@ function UnitTip({ unit }) {
   );
 }
 
-function EndCard({ title, body, onRestart }) {
+function EndCard({ title, body, buttons = [] }) {
   return (
     <div style={{
-      position: "absolute", inset: 0, background: "rgba(10,6,2,.55)",
-      display: "flex", alignItems: "center", justifyContent: "center", zIndex: 200
+      position: "absolute", inset: 0,
+      background: "radial-gradient(ellipse at center, rgba(20,10,4,.55) 0%, rgba(10,6,2,.82) 75%)",
+      backdropFilter: "blur(3px)", WebkitBackdropFilter: "blur(3px)",
+      display: "flex", alignItems: "center", justifyContent: "center", zIndex: 500,
     }}>
       <div style={{
         background: "linear-gradient(180deg,#f7ecd3,#ecdcb4)",
         border: "3px solid var(--wood-d)", borderRadius: 10,
-        padding: "28px 40px", textAlign: "center", boxShadow: "0 20px 50px rgba(0,0,0,.6)"
+        padding: "28px 40px", textAlign: "center", boxShadow: "0 20px 50px rgba(0,0,0,.6)",
+        minWidth: 320,
       }}>
         <div style={{ fontFamily: "Noto Serif TC, serif", fontWeight: 900, fontSize: 42, letterSpacing: 10, color: "var(--cinnabar-d)" }}>
           {title}
         </div>
         <div style={{ marginTop: 6, letterSpacing: 4, color: "var(--ink-soft)" }}>{body}</div>
-        <button className="ctl-btn" style={{ marginTop: 18, padding: "10px 28px" }} onClick={onRestart}>
-          再 戰
-        </button>
+        <div style={{ marginTop: 18, display: "flex", gap: 12, justifyContent: "center" }}>
+          {buttons.map((b, i) => (
+            <button key={i} className="ctl-btn"
+              style={{
+                padding: "10px 28px",
+                background: b.danger ? "linear-gradient(180deg,#b23a2a,#7d2519)" : undefined,
+                color: b.danger ? "#fff7d0" : undefined,
+                opacity: b.primary ? 1 : .9,
+              }}
+              onClick={b.onClick}>
+              {b.label}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
+}
+
+/* ---------------- App Router ---------------- */
+function App() {
+  const [tweaks, setTweaks] = useState(() => ({...window.__TWEAKS}));
+  useEffect(() => {
+    const h = (e) => setTweaks({...e.detail});
+    window.addEventListener('tweaks-change', h);
+    return () => window.removeEventListener('tweaks-change', h);
+  }, []);
+
+  const [screen, setScreen] = useState("briefing"); // briefing | transition | battle
+  const [campaign, setCampaign] = useState(CAMPAIGNS[0]);
+  const [roster, setRoster] = useState(null);
+
+  function onLaunch(chosenRoster) {
+    setRoster(chosenRoster);
+    setScreen("transition");
+  }
+  function onTransitionDone() {
+    setScreen("battle");
+  }
+  function onExitBattle() {
+    setScreen("briefing");
+  }
+
+  if (screen === "briefing") {
+    return <Briefing
+      campaign={campaign}
+      units={UNITS} enemies={ENEMIES}
+      rosterSize={Math.max(1, Math.min(UNITS.length, tweaks.rosterSize || 6))}
+      onLaunch={onLaunch}
+    />;
+  }
+  if (screen === "transition") {
+    return <BattleTransition campaign={campaign} onDone={onTransitionDone} />;
+  }
+  return <Battle roster={roster} campaign={campaign} onExit={onExitBattle} />;
 }
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

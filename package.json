@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "description": "俠客守江山 — wuxia tower defense",
   "scripts": {
-    "build": "babel game.jsx -o game.js --presets=@babel/preset-react",
+    "build": "cat briefing.jsx game.jsx | babel --presets=@babel/preset-react -f game.jsx -o game.js",
     "serve": "python3 -m http.server 8080"
   },
   "devDependencies": {
