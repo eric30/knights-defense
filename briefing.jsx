@@ -1,9 +1,11 @@
 /* 佈陣會議 + 過場動畫 */
 /* Depends on: UNITS, ENEMIES, CAMPAIGNS, UnitSprite, EnemySprite (from game.jsx) */
 
-function Briefing({ campaign, units, enemies, rosterSize, onLaunch }) {
+function Briefing({ campaign, units, enemies, items, rosterSize, itemCount = 3, onLaunch }) {
+  const SHOW_ITEMS = false; // 隨身寶功能暫時移除（破壞平衡）；未來可改回 true 恢復
   const enemyList = campaign.enemies.map(id => enemies.find(e => e.id === id)).filter(Boolean);
   const [selected, setSelected] = React.useState([]);
+  const [pickedItems, setPickedItems] = React.useState([]);
   const [detail, setDetail] = React.useState({ kind: "unit", id: units[0].id });
 
   // If rosterSize changes via tweaks, trim
@@ -21,12 +23,19 @@ function Briefing({ campaign, units, enemies, rosterSize, onLaunch }) {
       return [...sel, id];
     });
   }
+  function toggleItem(id) {
+    setPickedItems(p => {
+      if (p.includes(id)) return p.filter(x => x !== id);
+      if (p.length >= itemCount) return p;
+      return [...p, id];
+    });
+  }
 
   const detailObj = detail.kind === "unit"
     ? units.find(u => u.id === detail.id)
     : enemies.find(e => e.id === detail.id);
 
-  const ready = selected.length === rosterSize;
+  const ready = selected.length === rosterSize && (!SHOW_ITEMS || pickedItems.length === itemCount);
 
   return (
     <div className="briefing">
@@ -134,15 +143,49 @@ function Briefing({ campaign, units, enemies, rosterSize, onLaunch }) {
         </section>
       </div>
 
+      {SHOW_ITEMS && (
+      <section className="bf-panel bf-items">
+        <header className="bf-ph">
+          <span className="bf-ph-title">隨 身 寶 · 請 挑 三 樣</span>
+          <span className={"bf-count" + (pickedItems.length === itemCount ? " ready" : "")}>
+            {pickedItems.length} / {itemCount}
+          </span>
+        </header>
+        <div className="bf-item-row">
+          {items.map(it => {
+            const picked = pickedItems.includes(it.id);
+            const full = !picked && pickedItems.length >= itemCount;
+            return (
+              <div key={it.id}
+                className={"bf-item" + (picked ? " picked" : "") + (full ? " disabled" : "")}
+                onClick={() => !full && toggleItem(it.id)}>
+                <div className="bf-item-icon"
+                  style={{ background: `radial-gradient(circle at 35% 30%, rgba(255,255,255,.45), transparent 60%), ${it.color}` }}>
+                  {it.icon}
+                </div>
+                <div className="bf-item-text">
+                  <div className="bf-item-name">{it.name}</div>
+                  <div className="bf-item-desc">{it.desc}</div>
+                </div>
+                {picked && <div className="bf-item-check">✓</div>}
+              </div>
+            );
+          })}
+        </div>
+      </section>
+      )}
+
       <footer className="bf-foot">
         <div className="bf-foot-hint">
           {ready
             ? "兵員已齊，請將軍擊鼓開戰。"
-            : `尚需 ${rosterSize - selected.length} 位俠客應徵。`}
+            : selected.length < rosterSize
+              ? `尚需 ${rosterSize - selected.length} 位俠客應徵。`
+              : `尚需挑選 ${itemCount - pickedItems.length} 樣寶物。`}
         </div>
         <button className={"bf-launch" + (ready ? " ready" : "")}
           disabled={!ready}
-          onClick={() => onLaunch(selected)}>
+          onClick={() => onLaunch(selected, pickedItems.map(id => items.find(x => x.id === id)))}>
           擊 鼓 開 戰
         </button>
       </footer>

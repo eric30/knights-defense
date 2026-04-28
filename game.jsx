@@ -10,7 +10,7 @@ const UNITS = [
     color: "#5c8a42", accent: "#b23a2a",
     desc: "基礎遠攻。每 1.4 秒射出一箭，穩定消耗。",
     tags: ["遠程", "單體"],
-    title: "射雕手 · 黃忠舊部",
+    title: "射鵰手 · 黃忠舊部",
     story: "出身荊州獵戶，自幼拉弓射虎，後隨黃忠學藝。百步穿楊，箭無虛發，守城戰中最可靠的眼睛。",
   },
   {
@@ -77,7 +77,7 @@ const UNITS = [
     story: "蘇州暗器世家的獨子，一身青布短衣，袖裡藏七星。快、準、狠，連眨眼都能要命。",
   },
   {
-    id: "flame", name: "火焰陣", cost: 200, cd: 18, hp: 4,
+    id: "flame", name: "火焰陣", cost: 200, cd: 18, hp: 5,
     kind: "ranged", interval: 2.4, projectile: "fire", dmg: 3, splash: true,
     color: "#d13a20", accent: "#6a1a0a",
     desc: "機關噴火，高傷大範圍，適合清一大群敵人。",
@@ -94,36 +94,60 @@ const UNITS = [
     title: "白馬長槍兵 · 趙雲門下",
     story: "常山趙子龍的親兵後人，一桿丈八長槍。身在後排，卻能一刺串兩敵，進退有度。",
   },
+  {
+    id: "medic", name: "藥師", cost: 150, cd: 14, hp: 6,
+    kind: "healer", interval: 2.5, heal: 3, healRange: 1.5,
+    color: "#7ab26a", accent: "#1f4a2a",
+    desc: "懸壺濟世。每 2.5 秒為周圍 1.5 格內、最低血的同袍恢復 3 點血。",
+    tags: ["輔助", "治療"],
+    title: "杏林藥師 · 華佗弟子",
+    story: "出身譙郡，跟著華佗學了一身金針續命的本事。背著藥簍上戰場，兵卒最盼她在身旁。",
+  },
 ];
 
 /* Enemy library – diverse attack patterns */
 const ENEMIES = [
-  { id: "infantry", name: "小嘍囉", hp: 4,  speed: 0.0013, dmg: 1, color: "#6a5130", kind: "melee", interval: 1.1,
+  { id: "infantry", name: "小嘍囉", hp: 3,  speed: 0.0009, dmg: 1, color: "#6a5130", kind: "melee", interval: 1.1, scale: 0.95,
     title: "黃巾散兵", story: "頭裹黃巾的流民，手持鋸齒刀，為一口飽飯上戰場。人數最多，但一觸即潰。" },
-  { id: "shield",   name: "盾兵",   hp: 12, speed: 0.0010, dmg: 1, color: "#4a4a4a", kind: "melee", interval: 1.4,
+  { id: "shield",   name: "盾兵",   hp: 8,  speed: 0.0007, dmg: 1, color: "#4a4a4a", kind: "melee", interval: 1.4, scale: 1.15,
     title: "重盾死士", story: "一人高的鐵木盾，擋刀擋箭。移動極慢，但一旦頂到前排就很難撼動。" },
-  { id: "fast",     name: "蒙面刺客", hp: 3,  speed: 0.0025, dmg: 2, color: "#2a2a2a", kind: "melee", interval: 0.8,
+  { id: "fast",     name: "蒙面刺客", hp: 2,  speed: 0.0017, dmg: 2, color: "#2a2a2a", kind: "melee", interval: 0.8, scale: 0.9,
     title: "夜行刺客", story: "江湖上被買通的殺手，黑巾蒙面，來去如影。血不厚，但一刀致命。" },
-  { id: "archer",   name: "敵弓手",   hp: 3,  speed: 0.0012, dmg: 1, color: "#3a5540", kind: "ranged", interval: 2.2, projectile: "arrow",
+  { id: "archer",   name: "敵弓手",   hp: 2,  speed: 0.0008, dmg: 1, color: "#3a5540", kind: "ranged", interval: 2.2, projectile: "arrow", scale: 0.95,
     title: "山林獵戶（被擄）", story: "被山賊脅迫的獵戶，站後排冷箭偷襲。只要你的前排倒了，他的箭就會穿過整條走道。" },
-  { id: "cannon",   name: "火砲車",   hp: 10, speed: 0.0007, dmg: 2, color: "#6b4a2b", kind: "ranged", interval: 3.0, projectile: "bomb", splash: true,
+  { id: "cannon",   name: "火砲車",   hp: 7,  speed: 0.0005, dmg: 2, color: "#6b4a2b", kind: "ranged", interval: 3.0, projectile: "bomb", splash: true, scale: 1.2,
     title: "魔教火砲車", story: "改裝過的攻城器，填的是火藥與鐵釘。一發下來濺射整排，慢但致命。" },
-  { id: "healer",   name: "妖僧",     hp: 6,  speed: 0.0009, dmg: 0, color: "#5a3e8a", kind: "healer", interval: 2.5, heal: 3,
+  { id: "healer",   name: "妖僧",     hp: 4,  speed: 0.0006, dmg: 0, color: "#5a3e8a", kind: "healer", interval: 2.5, heal: 3, scale: 1.0,
     title: "妖教護法僧", story: "自稱佛門，實為妖教。口唸偽咒，能讓身邊重傷的同夥瞬間回血。不除此人，全排難倒。" },
-  { id: "leaper",   name: "飛賊",     hp: 5,  speed: 0.0020, dmg: 1, color: "#8a3a5a", kind: "leap", interval: 1.0,
+  { id: "leaper",   name: "飛賊",     hp: 3,  speed: 0.0014, dmg: 1, color: "#8a3a5a", kind: "leap", interval: 1.0, scale: 0.95,
     title: "輕功飛賊", story: "一身黑衣的梁上君子。碰到擋路的俠客能一個縱身躍過去，前排肉盾對他沒用。" },
-  { id: "boss",     name: "魔教護法", hp: 30, speed: 0.0008, dmg: 2, color: "#7a1e30", kind: "melee", interval: 1.2,
-    title: "魔教左護法", story: "張角失蹤後殘部之首，頭戴鐵角盔，一身橫練。血厚力強，是最後壓場的大魔王。" },
+  { id: "boss",     name: "魔教護法", hp: 41, speed: 0.0009, dmg: 4, color: "#3a0a18", kind: "melee", interval: 1.0, scale: 1.7,
+    title: "魔教左護法", story: "張角失蹤後殘部之首，頭戴鐵角盔，一身橫練，血厚力強、刀刀見骨——最後壓場的大魔王。" },
 ];
 
 /* ---------------- Campaign ---------------- */
+const ITEMS = [
+  { id: "qi_jar",   name: "聚氣寶瓶", icon: "瓶", color: "#c98a2a",
+    desc: "起始內力 +80。", effect: { startQiBonus: 80 } },
+  { id: "wind",     name: "順風旗",   icon: "風", color: "#3a8dd1",
+    desc: "所有俠客冷卻時間 -25%。", effect: { cdMul: 0.75 } },
+  { id: "blade",    name: "霜寒劍訣", icon: "劍", color: "#b23a2a",
+    desc: "所有俠客傷害 +25%。", effect: { dmgMul: 1.25 } },
+  { id: "shield",   name: "玄鐵腰牌", icon: "盾", color: "#3e6a4a",
+    desc: "所有俠客血量 +30%。", effect: { hpMul: 1.3 } },
+  { id: "spring",   name: "靈泉護符", icon: "泉", color: "#3e8a7a",
+    desc: "氣水珠出現頻率翻倍、價值 +10。", effect: { orbRateMul: 2, orbBonus: 10 } },
+  { id: "talisman", name: "封魔靈符", icon: "符", color: "#7a4ec4",
+    desc: "所有敵人速度 -15%、血量 -10%。", effect: { enemySpeedMul: 0.85, enemyHpMul: 0.9 } },
+];
+
 const CAMPAIGNS = [
   {
     id: "yellow_turban", name: "黃巾之亂", era: "漢靈帝 · 中平元年",
     location: "冀州 · 廣宗城外",
     intro: "蒼天已死，黃天當立。張角兄弟率黃巾軍縱橫河北，流民被蠱惑，四野烽煙。你奉命守下廣宗城外的一處莊院，等待盧植大軍馳援。",
-    enemies: ["infantry", "shield", "fast", "archer"],
-    waves: 6,
+    enemies: ["infantry", "fast", "archer", "shield", "leaper", "cannon", "healer", "boss"],
+    waves: 10,
   },
   {
     id: "hulao_pass", name: "虎牢關前", era: "漢獻帝 · 初平元年",
@@ -149,32 +173,41 @@ const CAMPAIGNS = [
 ];
 
 
+/* Victory idioms – pick one at random per battle */
+const VICTORY_IDIOMS = [
+  { title: "江山無恙", body: "來犯之敵盡退，天下初定。" },
+  { title: "凱旋而歸", body: "鼓角齊鳴，將士帶笑歸營。" },
+  { title: "大獲全勝", body: "敵軍潰散千里，戰旗插遍山河。" },
+  { title: "馬到成功", body: "鐵蹄踏破敵陣，一氣呵成。" },
+  { title: "旗開得勝", body: "戰旗剛揚，捷報已至。" },
+  { title: "所向披靡", body: "我軍鋒芒所指，無人能擋。" },
+  { title: "風平浪靜", body: "硝煙散盡，山河重歸安寧。" },
+  { title: "天下太平", body: "戰火止息，四海再無干戈。" },
+  { title: "一統山河", body: "群雄盡服，江山再歸一家。" },
+  { title: "化險為夷", body: "九死一生，終轉危為安。" },
+  { title: "眾志成城", body: "弟兄齊心，築成不破之牆。" },
+  { title: "勢如破竹", body: "一路勢猛如破竹，敵不敢攖鋒。" },
+  { title: "捷報頻傳", body: "前線急報接踵而至，皆書一勝字。" },
+  { title: "百戰百勝", body: "每戰必克，名動四方。" },
+  { title: "英雄凱歌", body: "豪傑列隊高歌，琴瑟和鳴。" },
+];
+
 /* Wave composition – escalating difficulty */
 const WAVES = [
-  // Wave 1
-  [["infantry", 3]],
+  // Wave 1 – intro
+  [["infantry", 4]],
   // Wave 2
-  [["infantry", 4], ["fast", 1]],
+  [["infantry", 6], ["fast", 2]],
   // Wave 3
-  [["infantry", 4], ["archer", 1], ["fast", 2]],
+  [["infantry", 7], ["archer", 2], ["shield", 1]],
   // Wave 4
-  [["shield", 2], ["infantry", 4], ["archer", 2], ["fast", 1]],
-  // Wave 5
-  [["leaper", 1], ["fast", 3], ["infantry", 4], ["archer", 2]],
+  [["infantry", 8], ["fast", 3], ["archer", 3], ["leaper", 1]],
+  // Wave 5 – 魔王現身
+  [["boss", 1], ["infantry", 6], ["shield", 2], ["archer", 2], ["fast", 2]],
   // Wave 6
-  [["cannon", 1], ["shield", 3], ["fast", 3], ["infantry", 4], ["archer", 1]],
-  // Wave 7
-  [["healer", 1], ["infantry", 6], ["archer", 3], ["shield", 2], ["fast", 2]],
-  // Wave 8
-  [["cannon", 2], ["leaper", 2], ["archer", 3], ["shield", 3], ["infantry", 5], ["fast", 2]],
-  // Wave 9
-  [["healer", 2], ["cannon", 2], ["shield", 4], ["archer", 3], ["fast", 4], ["infantry", 6], ["leaper", 1]],
-  // Wave 10
-  [["leaper", 3], ["cannon", 2], ["healer", 1], ["archer", 4], ["shield", 4], ["fast", 5], ["infantry", 7]],
-  // Wave 11
-  [["cannon", 3], ["healer", 2], ["leaper", 3], ["archer", 4], ["shield", 5], ["fast", 5], ["infantry", 8]],
-  // Wave 12 – final boss
-  [["boss", 1], ["healer", 2], ["cannon", 3], ["leaper", 3], ["archer", 5], ["shield", 5], ["fast", 6], ["infantry", 10]],
+  [["cannon", 1], ["healer", 1], ["shield", 3], ["leaper", 2], ["archer", 4], ["fast", 4], ["infantry", 8]],
+  // Wave 7 – 終戰
+  [["boss", 2], ["healer", 1], ["cannon", 2], ["leaper", 3], ["shield", 4], ["archer", 4], ["fast", 5], ["infantry", 10]],
 ];
 
 /* ---------------- SVG sprites (Q-版, original & simple) ---------------- */
@@ -329,9 +362,8 @@ function EnemySprite({ enemy, size = 48 }) {
       )}
       {enemy.id === "boss" && (
         <g>
-          {/* horned helmet */}
-          <path d="M22,12 L22,20 L42,20 L42,12 Q32,6 22,12 Z" fill="#2a241c" />
-          <path d="M22,12 L16,4 M42,12 L48,4" stroke="#2a241c" strokeWidth="2.5" strokeLinecap="round" />
+          <rect x="48" y="14" width="3" height="34" fill="#8a6a3a" />
+          <path d="M44,10 L56,10 L50,22 Z" fill="#b23a2a" stroke="#1a130a" strokeWidth="1" />
         </g>
       )}
       {enemy.id === "archer" && (
@@ -382,12 +414,6 @@ function EnemySprite({ enemy, size = 48 }) {
           <path d="M8,38 L2,30 L6,28 L12,36 Z" fill="#cfd8dc" stroke="#1a130a" strokeWidth="1" />
         </g>
       )}
-      {enemy.id === "boss" && (
-        <g>
-          <rect x="48" y="14" width="3" height="34" fill="#8a6a3a" />
-          <path d="M44,10 L56,10 L50,22 Z" fill="#b23a2a" stroke="#1a130a" strokeWidth="1" />
-        </g>
-      )}
       {enemy.id === "archer" && (
         <g>
           {/* bow */}
@@ -407,6 +433,38 @@ function EnemySprite({ enemy, size = 48 }) {
 }
 
 /* Small decorative sprites on the field */
+function WhistleIcon({ size = 56 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 64 64">
+      <defs>
+        <linearGradient id="wh-body" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#e8ecef" />
+          <stop offset="45%" stopColor="#b8bfc5" />
+          <stop offset="100%" stopColor="#6b7078" />
+        </linearGradient>
+        <linearGradient id="wh-mouth" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#cfd4d9" />
+          <stop offset="100%" stopColor="#7a8088" />
+        </linearGradient>
+      </defs>
+      {/* lanyard loop */}
+      <circle cx="14" cy="14" r="4" fill="none" stroke="#2a2e33" strokeWidth="2" />
+      <path d="M14,18 Q12,26 18,30" stroke="#b23a2a" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+      {/* mouthpiece */}
+      <rect x="8" y="30" width="14" height="10" rx="2" fill="url(#wh-mouth)" stroke="#2a2e33" strokeWidth="1.6" />
+      {/* body (pealess style: oval) */}
+      <path d="M22,28 L48,24 Q58,28 58,38 Q58,48 48,50 L22,46 Z"
+            fill="url(#wh-body)" stroke="#2a2e33" strokeWidth="1.8" strokeLinejoin="round" />
+      {/* top ridge */}
+      <path d="M24,30 L48,27" stroke="rgba(255,255,255,.6)" strokeWidth="2" fill="none" strokeLinecap="round" />
+      {/* sound hole */}
+      <ellipse cx="30" cy="38" rx="4" ry="3" fill="#1c1f24" stroke="#2a2e33" strokeWidth="1.2" />
+      {/* brand dot */}
+      <circle cx="48" cy="38" r="2" fill="#b23a2a" stroke="#2a2e33" strokeWidth="1" />
+    </svg>
+  );
+}
+
 function Pagoda({ x = 92, y = 20 }) {
   return (
     <div className="entity" style={{ left: `${x}%`, top: `${y}%` }}>
@@ -455,11 +513,34 @@ function Rock({ x, y }) {
 /* ---------------- Game component ---------------- */
 const ROWS = 5, COLS = 9;
 
-function Battle({ roster, campaign, onExit }) {
+function Battle({ roster, campaign, items = [], onExit }) {
   /* Tweaks */
   const [tweaks, setTweaks] = useState(() => ({...window.__TWEAKS}));
+  /* Item bonuses derived once */
+  const itemBonus = useMemo(() => {
+    const b = {
+      startQiBonus: 0, cdMul: 1, dmgMul: 1, hpMul: 1,
+      orbRateMul: 1, orbBonus: 0, enemySpeedMul: 1, enemyHpMul: 1,
+    };
+    items.forEach(it => {
+      const e = it.effect || {};
+      if (e.startQiBonus) b.startQiBonus += e.startQiBonus;
+      if (e.cdMul) b.cdMul *= e.cdMul;
+      if (e.dmgMul) b.dmgMul *= e.dmgMul;
+      if (e.hpMul) b.hpMul *= e.hpMul;
+      if (e.orbRateMul) b.orbRateMul *= e.orbRateMul;
+      if (e.orbBonus) b.orbBonus += e.orbBonus;
+      if (e.enemySpeedMul) b.enemySpeedMul *= e.enemySpeedMul;
+      if (e.enemyHpMul) b.enemyHpMul *= e.enemyHpMul;
+    });
+    return b;
+  }, [items]);
   /* Randomize day/night per battle (ignore tweak value) */
-  const [isNight] = useState(() => Math.random() < 0.5);
+  /* Random scene per battle: day / noon / dusk / night / snow / rain */
+  const [timeOfDay] = useState(() => {
+    const scenes = ["day", "noon", "dusk", "night", "snow", "rain"];
+    return scenes[Math.floor(Math.random() * scenes.length)];
+  });
   /* Filter unit library by selected roster */
   const ACTIVE_UNITS = useMemo(
     () => UNITS.filter(u => !roster || roster.includes(u.id)),
@@ -472,9 +553,28 @@ function Battle({ roster, campaign, onExit }) {
   }, []);
 
   /* Core game state */
-  const [qi, setQi] = useState(tweaks.startQi || 100);
+  const [qi, setQi] = useState((tweaks.startQi || 100) + itemBonus.startQiBonus);
   const [selected, setSelected] = useState(null);       // unit id being placed
   const [recallMode, setRecallMode] = useState(false);  // whistle active — click to recall unit
+  const cursorRef = useRef(null);
+  useEffect(() => {
+    document.body.classList.toggle("recall-active", recallMode);
+    if (!recallMode) return;
+    const onMove = (e) => {
+      if (cursorRef.current) {
+        cursorRef.current.style.left = e.clientX + "px";
+        cursorRef.current.style.top = e.clientY + "px";
+      }
+    };
+    const onEsc = (e) => { if (e.key === "Escape") setRecallMode(false); };
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("keydown", onEsc);
+    return () => {
+      document.body.classList.remove("recall-active");
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("keydown", onEsc);
+    };
+  }, [recallMode]);
   const [placements, setPlacements] = useState([]);     // {id, unit, row, col, hp, lastAttack, nextProduce}
   const [enemies, setEnemies] = useState([]);           // {id, type, row, x (0-1 along lane), hp, slowUntil}
   const [projectiles, setProjectiles] = useState([]);   // {id, row, fromCol, x, dmg, kind, splash, slow, slowTime}
@@ -487,6 +587,7 @@ function Battle({ roster, campaign, onExit }) {
   const [paused, setPaused] = useState(false);
   const [confirmRestart, setConfirmRestart] = useState(false);
   const [time, setTime] = useState(0);                  // accumulated seconds
+  const [victoryIdiom, setVictoryIdiom] = useState(() => VICTORY_IDIOMS[Math.floor(Math.random() * VICTORY_IDIOMS.length)]);
   const idCounter = useRef(1);
   const nextId = () => idCounter.current++;
   const lastTs = useRef(performance.now());
@@ -583,17 +684,17 @@ function Battle({ roster, campaign, onExit }) {
   }, [paused, waveState, placements, enemies, projectiles, orbs, cooldowns, wave, tweaks]);
 
   function step(dt) {
-    /* Passive qi */
-    const qiGain = (tweaks.qiPerSecond / 10) * dt; // slow ambient
-    setQi(q => Math.min(999, q + qiGain));
+    /* Passive qi – disabled; internal qi comes only from orbs / producers */
+    // const qiGain = (tweaks.qiPerSecond / 10) * dt;
+    // setQi(q => Math.min(999, q + qiGain));
 
     /* Random natural qi orbs */
-    if (Math.random() < dt * 0.18) {
+    if (Math.random() < dt * 0.18 * itemBonus.orbRateMul) {
       setOrbs(o => [...o, {
         id: nextId(),
         x: 10 + Math.random() * 78,
         y: 10 + Math.random() * 80,
-        value: 25,
+        value: 25 + itemBonus.orbBonus,
         expireAt: performance.now() + 6000,
       }]);
     }
@@ -608,9 +709,9 @@ function Battle({ roster, campaign, onExit }) {
         const row = Math.floor(Math.random() * ROWS);
         const data = ENEMIES.find(e => e.id === type);
         setEnemies(es => [...es, {
-          id: nextId(), type, row, x: 0, hp: data.hp, slowUntil: 0,
+          id: nextId(), type, row, x: 0, hp: data.hp * itemBonus.enemyHpMul, slowUntil: 0,
         }]);
-        spawnTimer.current = 2.8 + Math.random() * 1.8;
+        spawnTimer.current = 1.2 + Math.random() * 1.0;
       }
       if (!spawnQueue.current.length) setWaveState("active");
     }
@@ -637,6 +738,33 @@ function Battle({ roster, campaign, onExit }) {
           }
           return p;
         }
+        /* healer (友方藥師) – periodically heals lowest-hp ally within range */
+        if (u.kind === "healer") {
+          if (!p.lastAttack || now - p.lastAttack >= u.interval * 1000) {
+            const range = u.healRange || 1.5;
+            // find allies (excluding self) within range with hp deficit
+            const candidates = ps.filter(o =>
+              o.id !== p.id &&
+              Math.abs(o.row - p.row) <= range &&
+              Math.abs(o.col - p.col) <= range &&
+              o.hp < o.unit.hp * itemBonus.hpMul
+            ).sort((a, b) => (a.hp / (a.unit.hp * itemBonus.hpMul)) - (b.hp / (b.unit.hp * itemBonus.hpMul)));
+            const tgt = candidates[0];
+            if (tgt) {
+              setPlacements(qs => qs.map(o => o.id === tgt.id
+                ? { ...o, hp: Math.min(o.unit.hp * itemBonus.hpMul, o.hp + (u.heal || 3)) }
+                : o));
+              // heal sparkle projectile
+              setProjectiles(prs => [...prs, {
+                id: nextId(), row: tgt.row, x: (tgt.col + 0.5) / COLS,
+                dmg: 0, kind: "heal", splash: false, life: 0.5,
+              }]);
+              changed = true;
+              return { ...p, lastAttack: now };
+            }
+          }
+          return p;
+        }
         /* attackers target enemies to the LEFT of the unit (enemies come from left, walk right) */
         // target any enemy in same row whose col <= unit's col + 0.5 (anywhere ahead/at unit)
         const lanesEnemies = enemies.filter(e => e.row === p.row && e.x * COLS <= p.col + 0.5);
@@ -648,7 +776,7 @@ function Battle({ roster, campaign, onExit }) {
           const enemyCol = target.x * COLS;
           if (enemyCol >= p.col - 0.6 && enemyCol <= p.col + 0.6) {
             if (!p.lastAttack || now - p.lastAttack >= u.interval * 1000) {
-              setEnemies(es => es.map(e => e.id === target.id ? { ...e, hp: e.hp - u.dmg } : e));
+              setEnemies(es => es.map(e => e.id === target.id ? { ...e, hp: e.hp - u.dmg * itemBonus.dmgMul } : e));
               changed = true;
               return { ...p, lastAttack: now };
             }
@@ -667,7 +795,7 @@ function Battle({ roster, campaign, onExit }) {
             .slice(0, range);
           if (hits.length > 0 && (!p.lastAttack || now - p.lastAttack >= u.interval * 1000)) {
             const ids = new Set(hits.map(h => h.id));
-            setEnemies(es => es.map(e => ids.has(e.id) ? { ...e, hp: e.hp - u.dmg } : e));
+            setEnemies(es => es.map(e => ids.has(e.id) ? { ...e, hp: e.hp - u.dmg * itemBonus.dmgMul } : e));
             // spawn a short spear-flash projectile for visual
             setProjectiles(prs => [...prs, {
               id: nextId(), row: p.row, x: (p.col + 0.5) / COLS,
@@ -684,7 +812,7 @@ function Battle({ roster, campaign, onExit }) {
             id: nextId(),
             row: p.row,
             x: (p.col + 0.5) / COLS,
-            dmg: u.dmg,
+            dmg: u.dmg * itemBonus.dmgMul,
             kind: u.projectile,
             splash: u.splash,
             slow: u.slow, slowTime: u.slowTime,
@@ -708,7 +836,7 @@ function Battle({ roster, campaign, onExit }) {
 
         // Leapers: if leaping, fly over a unit
         if (data.kind === "leap" && e.leapUntil && e.leapUntil > now) {
-          const nx = e.x + data.speed * 2.2 * slowFactor * dt * 60;
+          const nx = e.x + data.speed * itemBonus.enemySpeedMul * 2.2 * slowFactor * dt * 60;
           if (nx >= 1) lost = true;
           return { ...e, x: nx };
         }
@@ -787,7 +915,7 @@ function Battle({ roster, campaign, onExit }) {
         }
 
         // walk
-        const nx = e.x + data.speed * slowFactor * dt * 60;
+        const nx = e.x + data.speed * itemBonus.enemySpeedMul * slowFactor * dt * 60;
         if (nx >= 1) lost = true;
         return { ...e, x: nx };
       }).filter(e => e.hp > 0);
@@ -863,7 +991,7 @@ function Battle({ roster, campaign, onExit }) {
           setWave(w => w + 1);
           setWaveState("spawning");
           startWave(wave + 1);
-        }, 4500);
+        }, 9000);
       }
     }
   }
@@ -894,9 +1022,9 @@ function Battle({ roster, campaign, onExit }) {
         if (cooldowns[u.id] && cooldowns[u.id] > now) { flash("尚在運氣"); return; }
         setQi(q => q - u.cost);
         setPlacements(ps => ps.map(p => p.id === existing.id
-          ? { ...p, hp: u.hp, lastAttack: 0, nextProduce: u.kind === "producer" ? now + 3000 : 0 }
+          ? { ...p, hp: u.hp * itemBonus.hpMul, lastAttack: 0, nextProduce: u.kind === "producer" ? now + 3000 : 0 }
           : p));
-        setCooldowns(cd => ({ ...cd, [u.id]: now + u.cd * 1000 }));
+        setCooldowns(cd => ({ ...cd, [u.id]: now + u.cd * 1000 * itemBonus.cdMul }));
         return;
       }
       flash("此處已有"); return;
@@ -906,9 +1034,9 @@ function Battle({ roster, campaign, onExit }) {
     if (cooldowns[u.id] && cooldowns[u.id] > now) { flash("尚在運氣"); return; }
     setQi(q => q - u.cost);
     setPlacements(ps => [...ps, {
-      id: nextId(), unit: u, row: r, col: c, hp: u.hp, lastAttack: 0, nextProduce: u.kind === "producer" ? now + 3000 : 0,
+      id: nextId(), unit: u, row: r, col: c, hp: u.hp * itemBonus.hpMul, lastAttack: 0, nextProduce: u.kind === "producer" ? now + 3000 : 0,
     }]);
-    setCooldowns(cd => ({ ...cd, [u.id]: now + u.cd * 1000 }));
+    setCooldowns(cd => ({ ...cd, [u.id]: now + u.cd * 1000 * itemBonus.cdMul }));
   }
 
   function flash(msg) {
@@ -923,7 +1051,7 @@ function Battle({ roster, campaign, onExit }) {
   }
 
   function restart() {
-    setQi(tweaks.startQi || 100);
+    setQi((tweaks.startQi || 100) + itemBonus.startQiBonus);
     setPlacements([]);
     setEnemies([]);
     setProjectiles([]);
@@ -931,6 +1059,7 @@ function Battle({ roster, campaign, onExit }) {
     setCooldowns({});
     setWave(0);
     setWaveState("idle");
+    setVictoryIdiom(VICTORY_IDIOMS[Math.floor(Math.random() * VICTORY_IDIOMS.length)]);
     if (prepTimerRef.current) { clearInterval(prepTimerRef.current); prepTimerRef.current = null; }
     spawnQueue.current = [];
     spawnTimer.current = 0;
@@ -943,6 +1072,11 @@ function Battle({ roster, campaign, onExit }) {
   /* Render */
   return (
     <div className="scroll">
+      {recallMode && (
+        <div ref={cursorRef} className="whistle-cursor">
+          <WhistleIcon size={56} />
+        </div>
+      )}
       <div className="rod rod-top" />
       <div className="scroll-body">
 
@@ -967,7 +1101,7 @@ function Battle({ roster, campaign, onExit }) {
             <div className="qi-label">內 力</div>
             <div className="qi-bar"><div style={{ width: `${Math.min(100, qi/2)}%` }} /></div>
           </div>
-          {/* Recall bell: hanging bronze bell, visually distinct from hero tray */}
+          {/* Recall whistle: modern referee whistle */}
           <div
             className={`whistle-card ${recallMode ? "selected" : ""}`}
             onClick={() => {
@@ -978,34 +1112,7 @@ function Battle({ roster, campaign, onExit }) {
           >
             <div className="wave-burst" />
             <div className="bell-wrap">
-              <svg width="56" height="56" viewBox="0 0 64 64">
-                <defs>
-                  <linearGradient id="bell-g" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#f0c24a" />
-                    <stop offset="55%" stopColor="#c98a2a" />
-                    <stop offset="100%" stopColor="#7a4d10" />
-                  </linearGradient>
-                  <linearGradient id="bell-rim" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#8a5414" />
-                    <stop offset="100%" stopColor="#5a3408" />
-                  </linearGradient>
-                </defs>
-                {/* hanging rope */}
-                <path d="M32,2 L32,10" stroke="#6b2a20" strokeWidth="2.2" strokeLinecap="round" />
-                {/* top cap loop */}
-                <path d="M28,10 Q32,4 36,10 L34,14 L30,14 Z" fill="#8a5414" stroke="#3a1e06" strokeWidth="1.2" />
-                {/* bell body */}
-                <path d="M16,50 Q16,22 32,16 Q48,22 48,50 Z"
-                  fill="url(#bell-g)" stroke="#3a1e06" strokeWidth="1.8" strokeLinejoin="round" />
-                {/* bell shine */}
-                <path d="M22,46 Q22,26 30,22" stroke="rgba(255,240,180,.6)" strokeWidth="2" fill="none" strokeLinecap="round" />
-                {/* bell rim */}
-                <rect x="14" y="48" width="36" height="5" rx="1.5" fill="url(#bell-rim)" stroke="#3a1e06" strokeWidth="1.4" />
-                {/* engraved center character stroke */}
-                <path d="M28,30 L36,30 M32,26 L32,38" stroke="#3a1e06" strokeWidth="1.6" strokeLinecap="round" opacity=".7" />
-                {/* clapper */}
-                <circle cx="32" cy="54" r="3" fill="#3a1e06" />
-              </svg>
+              <WhistleIcon size={56} />
             </div>
             <div className="wname">哨 子</div>
           </div>
@@ -1027,7 +1134,7 @@ function Battle({ roster, campaign, onExit }) {
                   setRecallMode(false);
                   setSelected(sel => sel === u.id ? null : u.id);
                 }}>
-                <div className="glyph"><UnitSprite unit={u} size={44} /></div>
+                <div className="glyph"><UnitSprite unit={u} size={48} /></div>
                 <div className="name">{u.name}</div>
                 <div className="cost">氣 {u.cost}</div>
                 {cdRemain > 0 && (
@@ -1046,9 +1153,15 @@ function Battle({ roster, campaign, onExit }) {
               <h3>戰 況</h3>
               <div className="wave-chip">第 {Math.min(wave+1, WAVES.length)} / {WAVES.length} 波</div>
               <div className="wave-dots">
-                {WAVES.map((_, i) => (
+                {WAVES.slice(0, 4).map((_, i) => (
                   <div key={i} className={`wave-dot ${i < wave ? "done" : i === wave ? "current" : ""}`} />
                 ))}
+              </div>
+              <div className="wave-dots">
+                {WAVES.slice(4).map((_, i) => {
+                  const idx = i + 4;
+                  return <div key={idx} className={`wave-dot ${idx < wave ? "done" : idx === wave ? "current" : ""}`} />;
+                })}
               </div>
             </div>
             <div className="side-card">
@@ -1060,13 +1173,32 @@ function Battle({ roster, campaign, onExit }) {
                 來犯之敵
               </div>
             </div>
+            {false && items.length > 0 && (
+              <div className="side-card">
+                <h3>隨 身 寶</h3>
+                <div style={{ display: "flex", gap: 6, justifyContent: "center", marginTop: 4 }}>
+                  {items.map(it => (
+                    <div key={it.id} title={`${it.name}：${it.desc}`}
+                      style={{
+                        width: 36, height: 36, borderRadius: "50%",
+                        background: `radial-gradient(circle at 35% 30%, rgba(255,255,255,.45), transparent 60%), ${it.color}`,
+                        color: "#fff", fontFamily: "Noto Serif TC, serif", fontWeight: 900, fontSize: 18,
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        border: "2px solid rgba(0,0,0,.35)",
+                        boxShadow: "inset 0 -3px 0 rgba(0,0,0,.25), 0 2px 3px rgba(0,0,0,.25)",
+                        cursor: "help",
+                      }}>{it.icon}</div>
+                  ))}
+                </div>
+              </div>
+            )}
             <button className="ctl-btn" onClick={() => setPaused(p => !p)}>
               {paused ? "續 戰" : "暫 停"}
             </button>
             <button className="ctl-btn" onClick={() => { setPaused(true); setConfirmRestart(true); }}>重 整</button>
           </div>
 
-          <div className={`stage ${isNight ? "night" : ""} ${recallMode ? "recall-mode" : ""}`}>
+          <div className={`stage ${timeOfDay} ${recallMode ? "recall-mode" : ""}`}>
             <div className="bg" />
             {/* lane stripes */}
             {[...Array(ROWS)].map((_, r) => (
@@ -1122,7 +1254,7 @@ function Battle({ roster, campaign, onExit }) {
             {/* placements */}
             {placements.map(p => (
               <div key={p.id} className="entity bob" style={{ left: `${colX(p.col)}%`, top: `${rowY(p.row)}%`, zIndex: 10 + p.row }}>
-                <UnitSprite unit={p.unit} size={56} />
+                <UnitSprite unit={p.unit} size={72} />
                 <div className="hp"><div style={{ width: `${(p.hp / p.unit.hp) * 100}%` }} /></div>
               </div>
             ))}
@@ -1136,7 +1268,7 @@ function Battle({ roster, campaign, onExit }) {
               const lifted = leaping ? py - 6 : py;
               return (
                 <div key={e.id} className="entity enemy-walk" style={{ left: `${px}%`, top: `${lifted}%`, zIndex: 20 + e.row, filter: leaping ? "drop-shadow(0 6px 4px rgba(0,0,0,.5))" : undefined }}>
-                  <EnemySprite enemy={data} size={52} />
+                  <EnemySprite enemy={data} size={Math.round(64 * (data.scale || 1))} />
                   <div className="hp"><div style={{ width: `${(e.hp / data.hp) * 100}%` }} /></div>
                 </div>
               );
@@ -1169,7 +1301,7 @@ function Battle({ roster, campaign, onExit }) {
             {toast && <Toast key={toast.key} msg={toast.msg} />}
 
             {waveState === "won" && (
-              <EndCard title="江山無恙" body="來犯之敵盡退，天下初定。"
+              <EndCard title={victoryIdiom.title} body={victoryIdiom.body}
                 buttons={[{ label: "再 戰", onClick: restart, primary: true }]} />
             )}
             {waveState === "lost" && (
@@ -1241,13 +1373,15 @@ function UnitTip({ unit }) {
   const u = unit;
   const attackLabel = u.kind === "producer"
     ? `每 ${u.interval}s 產氣 +${u.produce}`
-    : u.kind === "melee"
-      ? `近身 · 每 ${u.interval}s ${u.dmg} 傷`
-      : u.kind === "pierce"
-        ? `槍刺 · 每 ${u.interval}s ${u.dmg} 傷 × ${u.pierce || 2} 目標`
-        : u.kind === "slow"
-          ? `每 ${u.interval}s 減速 ${Math.round(u.slow*100)}% / ${u.slowTime}s`
-          : `每 ${u.interval}s · ${u.dmg} 傷${u.splash ? "（範圍）" : ""}`;
+    : u.kind === "healer"
+      ? `每 ${u.interval}s 為周圍同袍回血 ${u.heal}`
+      : u.kind === "melee"
+        ? `近身 · 每 ${u.interval}s ${u.dmg} 傷`
+        : u.kind === "pierce"
+          ? `槍刺 · 每 ${u.interval}s ${u.dmg} 傷 × ${u.pierce || 2} 目標`
+          : u.kind === "slow"
+            ? `每 ${u.interval}s 減速 ${Math.round(u.slow*100)}% / ${u.slowTime}s`
+            : `每 ${u.interval}s · ${u.dmg} 傷${u.splash ? "（範圍）" : ""}`;
   return (
     <div className="tip">
       <h5>{u.name}<small>{(u.tags || []).join(" · ")}</small></h5>
@@ -1256,7 +1390,7 @@ function UnitTip({ unit }) {
         <span>氣耗<b>{u.cost}</b></span>
         <span>冷卻<b>{u.cd}s</b></span>
         <span>血量<b>{u.hp}</b></span>
-        <span>{u.kind === "producer" ? "產出" : "攻擊"}<b>{attackLabel}</b></span>
+        <span>{u.kind === "producer" ? "產出" : u.kind === "healer" ? "功能" : "攻擊"}<b>{attackLabel}</b></span>
       </div>
     </div>
   );
@@ -1300,6 +1434,58 @@ function EndCard({ title, body, buttons = [] }) {
 }
 
 /* ---------------- App Router ---------------- */
+function ItemPick({ items, onConfirm, onBack }) {
+  const [picked, setPicked] = useState([]);
+  const limit = 3;
+  const ready = picked.length === limit;
+  const toggle = (id) => {
+    setPicked(p => {
+      if (p.includes(id)) return p.filter(x => x !== id);
+      if (p.length >= limit) return p;
+      return [...p, id];
+    });
+  };
+  return (
+    <div className="scroll briefing">
+      <div className="bf-banner">
+        <div className="bf-era">出 戰 之 前</div>
+        <div className="bf-name" style={{ fontSize: 44, letterSpacing: 16 }}>江湖機 · 隨身寶</div>
+        <div className="bf-loc">天降三寶 · 助你守土</div>
+        <div className="ip-header">
+          <p>請從以下六樣寶物中挑選 三 樣 隨身攜帶</p>
+          <span className={`ip-counter ${ready ? "ready" : ""}`}>已 選 {picked.length} / {limit}</span>
+        </div>
+      </div>
+      <div className="ip-grid">
+        {items.map(it => {
+          const isPicked = picked.includes(it.id);
+          const disabled = !isPicked && picked.length >= limit;
+          return (
+            <div key={it.id}
+              className={`ip-card ${isPicked ? "picked" : ""} ${disabled ? "disabled" : ""}`}
+              onClick={() => toggle(it.id)}>
+              <div className="ip-icon" style={{ background: `radial-gradient(circle at 35% 30%, rgba(255,255,255,.45), transparent 60%), ${it.color}` }}>
+                {it.icon}
+              </div>
+              <div className="ip-name">{it.name}</div>
+              <div className="ip-desc">{it.desc}</div>
+            </div>
+          );
+        })}
+      </div>
+      <div className="bf-foot" style={{ maxWidth: 980, margin: "8px auto 0" }}>
+        <button className="ctl-btn" onClick={onBack}>← 返 回 點 將</button>
+        <span className="bf-foot-hint">{ready ? "三寶在身，可以出征。" : `尚需挑選 ${limit - picked.length} 樣`}</span>
+        <button className={`bf-launch ${ready ? "ready" : ""}`}
+          disabled={!ready}
+          onClick={() => onConfirm(picked.map(id => items.find(x => x.id === id)))}>
+          領 寶 出 征
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function App() {
   const [tweaks, setTweaks] = useState(() => ({...window.__TWEAKS}));
   useEffect(() => {
@@ -1311,9 +1497,11 @@ function App() {
   const [screen, setScreen] = useState("briefing"); // briefing | transition | battle
   const [campaign, setCampaign] = useState(CAMPAIGNS[0]);
   const [roster, setRoster] = useState(null);
+  const [items, setItems] = useState([]);
 
-  function onLaunch(chosenRoster) {
+  function onLaunch(chosenRoster, chosenItems = []) {
     setRoster(chosenRoster);
+    setItems(chosenItems);
     setScreen("transition");
   }
   function onTransitionDone() {
@@ -1326,15 +1514,16 @@ function App() {
   if (screen === "briefing") {
     return <Briefing
       campaign={campaign}
-      units={UNITS} enemies={ENEMIES}
+      units={UNITS} enemies={ENEMIES} items={ITEMS}
       rosterSize={Math.max(1, Math.min(UNITS.length, tweaks.rosterSize || 6))}
+      itemCount={3}
       onLaunch={onLaunch}
     />;
   }
   if (screen === "transition") {
     return <BattleTransition campaign={campaign} onDone={onTransitionDone} />;
   }
-  return <Battle roster={roster} campaign={campaign} onExit={onExitBattle} />;
+  return <Battle roster={roster} campaign={campaign} items={items} onExit={onExitBattle} />;
 }
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
