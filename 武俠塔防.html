@@ -1425,8 +1425,15 @@
   <label>出戰名額 (俠客)
     <input id="roster-size" type="range" min="1" max="10" step="1" />
   </label>
+  <label>背景音樂
+    <span id="sw-music" class="switch on" role="button" tabindex="0"><span></span></span>
+  </label>
+  <label>音效
+    <span id="sw-sfx" class="switch on" role="button" tabindex="0"><span></span></span>
+  </label>
 </div>
 
+<script src="audio.js"></script>
 <script type="text/babel" data-presets="env,react" src="briefing.jsx"></script>
 <script type="text/babel" data-presets="env,react" src="game.jsx"></script>
 <script>
@@ -1445,6 +1452,28 @@
       window.dispatchEvent(new CustomEvent('tweaks-change', { detail: window.__TWEAKS }));
     }
     window.__persistTweak = persist;
+
+    // music / sfx switches
+    function bindSwitch(id, getter, setter) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const sync = () => el.classList.toggle('on', !!getter());
+      const toggle = () => {
+        const next = !getter();
+        setter(next);
+        if (next && window.__audio) window.__audio.start();
+        sync();
+      };
+      el.addEventListener('click', toggle);
+      el.addEventListener('keydown', (e) => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggle(); } });
+      const tick = setInterval(() => { if (window.__audio) { sync(); clearInterval(tick); } }, 100);
+    }
+    bindSwitch('sw-music',
+      () => window.__audio ? window.__audio.isMusicOn() : true,
+      (v) => window.__audio && window.__audio.setMusic(v));
+    bindSwitch('sw-sfx',
+      () => window.__audio ? window.__audio.isSfxOn() : true,
+      (v) => window.__audio && window.__audio.setSfx(v));
   })();
 </script>
 </body>

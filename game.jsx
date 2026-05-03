@@ -96,9 +96,9 @@ const UNITS = [
   },
   {
     id: "medic", name: "藥師", cost: 150, cd: 14, hp: 6,
-    kind: "healer", interval: 2.5, heal: 3, healRange: 1.5,
+    kind: "healer", interval: 2, heal: 3, healRange: 1,
     color: "#7ab26a", accent: "#1f4a2a",
-    desc: "懸壺濟世。每 2.5 秒為周圍 1.5 格內、最低血的同袍恢復 3 點血。",
+    desc: "懸壺濟世。每 2 秒為周圍 8 宮格內、最低血的同袍恢復 3 點血。",
     tags: ["輔助", "治療"],
     title: "杏林藥師 · 華佗弟子",
     story: "出身譙郡，跟著華佗學了一身金針續命的本事。背著藥簍上戰場，兵卒最盼她在身旁。",
@@ -107,21 +107,21 @@ const UNITS = [
 
 /* Enemy library – diverse attack patterns */
 const ENEMIES = [
-  { id: "infantry", name: "小嘍囉", hp: 3,  speed: 0.0009, dmg: 1, color: "#6a5130", kind: "melee", interval: 1.1, scale: 0.95,
+  { id: "infantry", name: "小嘍囉", hp: 3,  speed: 0.00045, dmg: 1, color: "#6a5130", kind: "melee", interval: 1.1, scale: 0.95,
     title: "黃巾散兵", story: "頭裹黃巾的流民，手持鋸齒刀，為一口飽飯上戰場。人數最多，但一觸即潰。" },
-  { id: "shield",   name: "盾兵",   hp: 8,  speed: 0.0007, dmg: 1, color: "#4a4a4a", kind: "melee", interval: 1.4, scale: 1.15,
+  { id: "shield",   name: "盾兵",   hp: 8,  speed: 0.00035, dmg: 1, color: "#4a4a4a", kind: "melee", interval: 1.4, scale: 1.15,
     title: "重盾死士", story: "一人高的鐵木盾，擋刀擋箭。移動極慢，但一旦頂到前排就很難撼動。" },
-  { id: "fast",     name: "蒙面刺客", hp: 2,  speed: 0.0017, dmg: 2, color: "#2a2a2a", kind: "melee", interval: 0.8, scale: 0.9,
+  { id: "fast",     name: "蒙面刺客", hp: 2,  speed: 0.00085, dmg: 2, color: "#2a2a2a", kind: "melee", interval: 0.8, scale: 0.9,
     title: "夜行刺客", story: "江湖上被買通的殺手，黑巾蒙面，來去如影。血不厚，但一刀致命。" },
-  { id: "archer",   name: "敵弓手",   hp: 2,  speed: 0.0008, dmg: 1, color: "#3a5540", kind: "ranged", interval: 2.2, projectile: "arrow", scale: 0.95,
+  { id: "archer",   name: "敵弓手",   hp: 2,  speed: 0.0004, dmg: 1, color: "#3a5540", kind: "ranged", interval: 2.2, projectile: "arrow", scale: 0.95,
     title: "山林獵戶（被擄）", story: "被山賊脅迫的獵戶，站後排冷箭偷襲。只要你的前排倒了，他的箭就會穿過整條走道。" },
-  { id: "cannon",   name: "火砲車",   hp: 7,  speed: 0.0005, dmg: 2, color: "#6b4a2b", kind: "ranged", interval: 3.0, projectile: "bomb", splash: true, scale: 1.2,
+  { id: "cannon",   name: "火砲車",   hp: 7,  speed: 0.00025, dmg: 2, color: "#6b4a2b", kind: "ranged", interval: 3.0, projectile: "bomb", splash: true, scale: 1.2,
     title: "魔教火砲車", story: "改裝過的攻城器，填的是火藥與鐵釘。一發下來濺射整排，慢但致命。" },
-  { id: "healer",   name: "妖僧",     hp: 4,  speed: 0.0006, dmg: 0, color: "#5a3e8a", kind: "healer", interval: 2.5, heal: 3, scale: 1.0,
+  { id: "healer",   name: "妖僧",     hp: 2,  speed: 0.0003, dmg: 0, color: "#5a3e8a", kind: "healer", interval: 3.5, heal: 2, scale: 1.0,
     title: "妖教護法僧", story: "自稱佛門，實為妖教。口唸偽咒，能讓身邊重傷的同夥瞬間回血。不除此人，全排難倒。" },
-  { id: "leaper",   name: "飛賊",     hp: 3,  speed: 0.0014, dmg: 1, color: "#8a3a5a", kind: "leap", interval: 1.0, scale: 0.95,
+  { id: "leaper",   name: "飛賊",     hp: 3,  speed: 0.0007, dmg: 1, color: "#8a3a5a", kind: "leap", interval: 1.0, scale: 0.95,
     title: "輕功飛賊", story: "一身黑衣的梁上君子。碰到擋路的俠客能一個縱身躍過去，前排肉盾對他沒用。" },
-  { id: "boss",     name: "魔教護法", hp: 41, speed: 0.0009, dmg: 4, color: "#3a0a18", kind: "melee", interval: 1.0, scale: 1.7,
+  { id: "boss",     name: "魔教護法", hp: 38, speed: 0.00045, dmg: 4, color: "#3a0a18", kind: "melee", interval: 1.0, scale: 1.7,
     title: "魔教左護法", story: "張角失蹤後殘部之首，頭戴鐵角盔，一身橫練，血厚力強、刀刀見骨——最後壓場的大魔王。" },
 ];
 
@@ -195,19 +195,19 @@ const VICTORY_IDIOMS = [
 /* Wave composition – escalating difficulty */
 const WAVES = [
   // Wave 1 – intro
-  [["infantry", 4]],
+  [["infantry", 8]],
   // Wave 2
-  [["infantry", 6], ["fast", 2]],
+  [["infantry", 12], ["fast", 4]],
   // Wave 3
-  [["infantry", 7], ["archer", 2], ["shield", 1]],
+  [["infantry", 14], ["archer", 4], ["shield", 2]],
   // Wave 4
-  [["infantry", 8], ["fast", 3], ["archer", 3], ["leaper", 1]],
+  [["infantry", 16], ["fast", 6], ["archer", 6], ["leaper", 2]],
   // Wave 5 – 魔王現身
-  [["boss", 1], ["infantry", 6], ["shield", 2], ["archer", 2], ["fast", 2]],
+  [["boss", 2], ["infantry", 12], ["shield", 4], ["archer", 4], ["fast", 4]],
   // Wave 6
-  [["cannon", 1], ["healer", 1], ["shield", 3], ["leaper", 2], ["archer", 4], ["fast", 4], ["infantry", 8]],
+  [["cannon", 2], ["healer", 2], ["shield", 6], ["leaper", 4], ["archer", 8], ["fast", 8], ["infantry", 16]],
   // Wave 7 – 終戰
-  [["boss", 2], ["healer", 1], ["cannon", 2], ["leaper", 3], ["shield", 4], ["archer", 4], ["fast", 5], ["infantry", 10]],
+  [["boss", 3], ["healer", 2], ["cannon", 4], ["leaper", 6], ["shield", 8], ["archer", 8], ["fast", 10], ["infantry", 20]],
 ];
 
 /* ---------------- SVG sprites (Q-版, original & simple) ---------------- */
@@ -575,7 +575,18 @@ function Battle({ roster, campaign, items = [], onExit }) {
       window.removeEventListener("keydown", onEsc);
     };
   }, [recallMode]);
-  const [placements, setPlacements] = useState([]);     // {id, unit, row, col, hp, lastAttack, nextProduce}
+
+  // Throttled SFX (避免大量同時命中時音效堆疊)
+  const lastSfxAt = useRef({});
+  const playHitSfx = useCallback((kind, minGap = 0.06) => {
+    if (!window.__audio || !window.__audio.sfx) return;
+    const now = performance.now() / 1000;
+    if (lastSfxAt.current[kind] && now - lastSfxAt.current[kind] < minGap) return;
+    lastSfxAt.current[kind] = now;
+    window.__audio.sfx(kind);
+  }, []);
+
+  const [placements, setPlacements] = useState([]);     // {id, unit, row, col, hp, lastAttack, nextProduceT}
   const [enemies, setEnemies] = useState([]);           // {id, type, row, x (0-1 along lane), hp, slowUntil}
   const [projectiles, setProjectiles] = useState([]);   // {id, row, fromCol, x, dmg, kind, splash, slow, slowTime}
   const [orbs, setOrbs] = useState([]);                 // free qi orbs {id, x, y, value, expireAt}
@@ -639,6 +650,7 @@ function Battle({ roster, campaign, items = [], onExit }) {
     spawnTimer.current = 1.0;
     setWaveState("spawning");
     setToast({ msg: `第 ${w+1} 波 · 敵來！`, key: Date.now() });
+    if (window.__audio) window.__audio.sfx("wave");
   }, []);
 
   /* Start first wave after a delay */
@@ -711,7 +723,9 @@ function Battle({ roster, campaign, items = [], onExit }) {
         setEnemies(es => [...es, {
           id: nextId(), type, row, x: 0, hp: data.hp * itemBonus.enemyHpMul, slowUntil: 0,
         }]);
-        spawnTimer.current = 1.2 + Math.random() * 1.0;
+        // 魔王仍維持原本節奏；其他敵人出現速度 ×2.5
+        const isBoss = type === "boss";
+        spawnTimer.current = isBoss ? (1.2 + Math.random() * 1.0) : ((1.2 + Math.random() * 1.0) / 2.5);
       }
       if (!spawnQueue.current.length) setWaveState("active");
     }
@@ -724,7 +738,8 @@ function Battle({ roster, campaign, items = [], onExit }) {
         const u = p.unit;
         /* producer */
         if (u.kind === "producer") {
-          if (!p.nextProduce || now >= p.nextProduce) {
+          // 使用累積遊戲時間 (time)，暫停時不推進
+          if (p.nextProduceT == null || time >= p.nextProduceT) {
             // spawn orb near producer
             setOrbs(o => [...o, {
               id: nextId(),
@@ -734,15 +749,15 @@ function Battle({ roster, campaign, items = [], onExit }) {
               expireAt: now + 7000,
             }]);
             changed = true;
-            return { ...p, nextProduce: now + u.interval * 1000 };
+            return { ...p, nextProduceT: time + u.interval };
           }
           return p;
         }
         /* healer (友方藥師) – periodically heals lowest-hp ally within range */
         if (u.kind === "healer") {
           if (!p.lastAttack || now - p.lastAttack >= u.interval * 1000) {
-            const range = u.healRange || 1.5;
-            // find allies (excluding self) within range with hp deficit
+            const range = u.healRange || 1;
+            // 8 宮格 = Chebyshev 距離 ≤ 1
             const candidates = ps.filter(o =>
               o.id !== p.id &&
               Math.abs(o.row - p.row) <= range &&
@@ -777,6 +792,7 @@ function Battle({ roster, campaign, items = [], onExit }) {
           if (enemyCol >= p.col - 0.6 && enemyCol <= p.col + 0.6) {
             if (!p.lastAttack || now - p.lastAttack >= u.interval * 1000) {
               setEnemies(es => es.map(e => e.id === target.id ? { ...e, hp: e.hp - u.dmg * itemBonus.dmgMul } : e));
+              playHitSfx("hit", 0.06);
               changed = true;
               return { ...p, lastAttack: now };
             }
@@ -796,6 +812,7 @@ function Battle({ roster, campaign, items = [], onExit }) {
           if (hits.length > 0 && (!p.lastAttack || now - p.lastAttack >= u.interval * 1000)) {
             const ids = new Set(hits.map(h => h.id));
             setEnemies(es => es.map(e => ids.has(e.id) ? { ...e, hp: e.hp - u.dmg * itemBonus.dmgMul } : e));
+            playHitSfx("hit", 0.06);
             // spawn a short spear-flash projectile for visual
             setProjectiles(prs => [...prs, {
               id: nextId(), row: p.row, x: (p.col + 0.5) / COLS,
@@ -836,7 +853,7 @@ function Battle({ roster, campaign, items = [], onExit }) {
 
         // Leapers: if leaping, fly over a unit
         if (data.kind === "leap" && e.leapUntil && e.leapUntil > now) {
-          const nx = e.x + data.speed * itemBonus.enemySpeedMul * 2.2 * slowFactor * dt * 60;
+          const nx = e.x + data.speed * itemBonus.enemySpeedMul * 2.2 * slowFactor * dt * 60 * 0.75;
           if (nx >= 1) lost = true;
           return { ...e, x: nx };
         }
@@ -915,11 +932,11 @@ function Battle({ roster, campaign, items = [], onExit }) {
         }
 
         // walk
-        const nx = e.x + data.speed * itemBonus.enemySpeedMul * slowFactor * dt * 60;
+        const nx = e.x + data.speed * itemBonus.enemySpeedMul * slowFactor * dt * 60 * 0.75;
         if (nx >= 1) lost = true;
         return { ...e, x: nx };
       }).filter(e => e.hp > 0);
-      if (lost) setWaveState("lost");
+      if (lost) { setWaveState("lost"); if (window.__audio) window.__audio.sfx("lose"); }
       return next;
     });
 
@@ -949,9 +966,11 @@ function Battle({ roster, campaign, items = [], onExit }) {
               setPlacements(ps => ps.map(p => p.row === pr.row
                 && Math.abs((p.col + 0.5) / COLS - nx) < 0.08
                 ? { ...p, hp: p.hp - pr.dmg } : p));
+              playHitSfx("explode", 0.08);
             } else {
               setPlacements(ps => ps.map(p => p.id === hitUnit.id
                 ? { ...p, hp: p.hp - pr.dmg } : p));
+              playHitSfx("shoot", 0.05);
             }
             continue;
           }
@@ -966,8 +985,10 @@ function Battle({ roster, campaign, items = [], onExit }) {
           if (pr.splash) {
             setEnemies(es => es.map(e => Math.abs(e.x - hit.x) < 0.05 && e.row === hit.row
               ? { ...e, hp: e.hp - pr.dmg } : e));
+            playHitSfx("explode", 0.08);
           } else {
             setEnemies(es => es.map(e => e.id === hit.id ? { ...e, hp: e.hp - pr.dmg } : e));
+            playHitSfx("shoot", 0.05);
           }
           if (pr.slow) {
             setEnemies(es => es.map(e => e.id === hit.id
@@ -984,6 +1005,7 @@ function Battle({ roster, campaign, items = [], onExit }) {
     if (waveState === "active" && enemies.length === 0) {
       if (wave + 1 >= WAVES.length) {
         setWaveState("won");
+        if (window.__audio) window.__audio.sfx("win");
       } else {
         setWaveState("cleared");
         setToast({ msg: `第 ${wave+1} 波已退`, key: Date.now() });
@@ -1007,6 +1029,7 @@ function Battle({ roster, campaign, items = [], onExit }) {
       setPlacements(ps => ps.filter(p => p.id !== existing.id));
       setCooldowns(cd => ({ ...cd, [existing.unit.id]: 0 }));
       flash(`${existing.unit.name} 歸隊 +${refund} 氣`);
+      if (window.__audio) window.__audio.sfx("qi");
       setRecallMode(false);
       return;
     }
@@ -1022,9 +1045,11 @@ function Battle({ roster, campaign, items = [], onExit }) {
         if (cooldowns[u.id] && cooldowns[u.id] > now) { flash("尚在運氣"); return; }
         setQi(q => q - u.cost);
         setPlacements(ps => ps.map(p => p.id === existing.id
-          ? { ...p, hp: u.hp * itemBonus.hpMul, lastAttack: 0, nextProduce: u.kind === "producer" ? now + 3000 : 0 }
+          ? { ...p, hp: u.hp * itemBonus.hpMul, lastAttack: 0, nextProduceT: u.kind === "producer" ? time + 3 : 0 }
           : p));
         setCooldowns(cd => ({ ...cd, [u.id]: now + u.cd * 1000 * itemBonus.cdMul }));
+        setSelected(null);
+        if (window.__audio) window.__audio.sfx("place");
         return;
       }
       flash("此處已有"); return;
@@ -1034,9 +1059,11 @@ function Battle({ roster, campaign, items = [], onExit }) {
     if (cooldowns[u.id] && cooldowns[u.id] > now) { flash("尚在運氣"); return; }
     setQi(q => q - u.cost);
     setPlacements(ps => [...ps, {
-      id: nextId(), unit: u, row: r, col: c, hp: u.hp * itemBonus.hpMul, lastAttack: 0, nextProduce: u.kind === "producer" ? now + 3000 : 0,
+      id: nextId(), unit: u, row: r, col: c, hp: u.hp * itemBonus.hpMul, lastAttack: 0, nextProduceT: u.kind === "producer" ? time + 3 : 0,
     }]);
     setCooldowns(cd => ({ ...cd, [u.id]: now + u.cd * 1000 * itemBonus.cdMul }));
+    setSelected(null);
+    if (window.__audio) window.__audio.sfx("place");
   }
 
   function flash(msg) {
@@ -1048,6 +1075,7 @@ function Battle({ roster, campaign, items = [], onExit }) {
     if (!o) return;
     setOrbs(os => os.filter(x => x.id !== id));
     setQi(q => Math.min(999, q + o.value));
+    if (window.__audio) window.__audio.sfx("qi");
   }
 
   function restart() {
@@ -1059,6 +1087,8 @@ function Battle({ roster, campaign, items = [], onExit }) {
     setCooldowns({});
     setWave(0);
     setWaveState("idle");
+    setPaused(false);
+    setConfirmRestart(false);
     setVictoryIdiom(VICTORY_IDIOMS[Math.floor(Math.random() * VICTORY_IDIOMS.length)]);
     if (prepTimerRef.current) { clearInterval(prepTimerRef.current); prepTimerRef.current = null; }
     spawnQueue.current = [];
@@ -1107,6 +1137,7 @@ function Battle({ roster, campaign, items = [], onExit }) {
             onClick={() => {
               setRecallMode(r => !r);
               setSelected(null);
+              if (window.__audio) window.__audio.sfx("click");
             }}
             title="召回俠客（返還半數內力）"
           >
@@ -1132,7 +1163,8 @@ function Battle({ roster, campaign, items = [], onExit }) {
                 onClick={() => {
                   if (cdRemain > 0 || poor) return;
                   setRecallMode(false);
-                  setSelected(sel => sel === u.id ? null : u.id);
+                  setSelected(u.id);
+                  if (window.__audio) window.__audio.sfx("click");
                 }}>
                 <div className="glyph"><UnitSprite unit={u} size={48} /></div>
                 <div className="name">{u.name}</div>

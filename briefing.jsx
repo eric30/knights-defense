@@ -185,7 +185,14 @@ function Briefing({ campaign, units, enemies, items, rosterSize, itemCount = 3, 
         </div>
         <button className={"bf-launch" + (ready ? " ready" : "")}
           disabled={!ready}
-          onClick={() => onLaunch(selected, pickedItems.map(id => items.find(x => x.id === id)))}>
+          onClick={() => {
+            // 擊鼓開戰 — 一連串鼓聲
+            if (window.__audio) {
+              window.__audio.start && window.__audio.start();
+              window.__audio.sfx && window.__audio.sfx("drumroll");
+            }
+            onLaunch(selected, pickedItems.map(id => items.find(x => x.id === id)));
+          }}>
           擊 鼓 開 戰
         </button>
       </footer>
